@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { motion } from 'motion/react'
 import { SEO, generateLocalBusinessSchema } from '@/lib/seo'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
@@ -17,15 +16,14 @@ import {
 } from 'lucide-react'
 import { FadeUp } from '@/components/motion/FadeUp'
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger'
+import { ScrollTilt } from '@/components/motion/ScrollTilt'
+import { TiltCard } from '@/components/motion/TiltCard'
 import { Accordion } from '@/components/ui/Accordion'
 import { RoadmapFlow } from '@/features/roadmap/RoadmapFlow'
 import { useRoadmapScrollTrigger } from '@/components/motion/ScrollProgressPath'
 import { DrillingVideo } from '@/features/drilling-video/DrillingVideo'
 import { servicesPageData } from '@/data/services'
 import { siteData } from '@/data/site'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { useIsMobile } from '@/hooks/useIsMobile'
-import { EASINGS, TRANSFORMS } from '@/lib/motion'
 
 const iconMap = {
   Home,
@@ -40,8 +38,6 @@ const iconMap = {
 export function ServicesPage() {
   const roadmapContainerRef = useRef<HTMLDivElement>(null)
   const [, setActiveScrollStep] = useState<number>(1)
-  const shouldReduceMotion = useReducedMotion()
-  const isMobile = useIsMobile()
 
   // GSAP ScrollTrigger roadmap road drawing (scrub: true)
   useRoadmapScrollTrigger({
@@ -59,41 +55,43 @@ export function ServicesPage() {
         jsonLd={generateLocalBusinessSchema({ pagePath: '/services', pageName: 'Services' })}
       />
 
-      {/* Page Hero */}
-      <section className="bg-gradient-to-b from-water-700 to-water-900 text-white py-14 sm:py-18">
+      {/* Page Hero with Level B ScrollTilt */}
+      <section className="bg-gradient-to-b from-water-700 to-water-900 text-white py-14 sm:py-18 overflow-hidden">
         <Container>
-          <FadeUp className="max-w-2xl">
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-condensed uppercase leading-tight">
-              {servicesPageData.heading}
-            </h1>
-            <p className="mt-3 text-base sm:text-lg text-water-100 font-sans leading-relaxed">
-              {servicesPageData.intro}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button
-                href="/#contact-estimate"
-                variant="white"
-                size="md"
-                className="font-condensed uppercase tracking-wider"
-              >
-                <span>Free Estimate</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                href={`tel:${siteData.phoneClean}`}
-                variant="secondary"
-                size="md"
-                className="text-white border-white hover:bg-white/10 font-condensed uppercase tracking-wider"
-              >
-                <Phone className="w-4 h-4" />
-                <span>{siteData.phone}</span>
-              </Button>
-            </div>
-          </FadeUp>
+          <ScrollTilt maxRotation={6}>
+            <FadeUp className="max-w-2xl">
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-condensed uppercase leading-tight">
+                {servicesPageData.heading}
+              </h1>
+              <p className="mt-3 text-base sm:text-lg text-water-100 font-sans leading-relaxed">
+                {servicesPageData.intro}
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button
+                  href="/#contact-estimate"
+                  variant="white"
+                  size="md"
+                  className="font-condensed uppercase tracking-wider"
+                >
+                  <span>Free Estimate</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+                <Button
+                  href={`tel:${siteData.phoneClean}`}
+                  variant="secondary"
+                  size="md"
+                  className="text-white border-white hover:bg-white/10 font-condensed uppercase tracking-wider"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>{siteData.phone}</span>
+                </Button>
+              </div>
+            </FadeUp>
+          </ScrollTilt>
         </Container>
       </section>
 
-      {/* 7 Services Grid (Cards lift 4px on hover) */}
+      {/* 7 Services Grid with Level B TiltCard */}
       <section className="py-14 sm:py-20 bg-white">
         <Container>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -102,18 +100,10 @@ export function ServicesPage() {
 
               return (
                 <StaggerItem key={service.id}>
-                  <motion.div
-                    whileHover={
-                      isMobile || shouldReduceMotion
-                        ? undefined
-                        : { y: TRANSFORMS.cardHoverY }
-                    }
-                    transition={{ duration: 0.18, ease: EASINGS.easeOut }}
-                    className="h-full"
-                  >
+                  <TiltCard maxTilt={7} className="h-full">
                     <Card
                       variant="interactive"
-                      className="group flex flex-col h-full bg-water-50/50 border border-water-200 hover:border-water-400 hover:shadow-md transition-shadow duration-200 rounded-2xl p-6"
+                      className="group flex flex-col h-full bg-water-50/50 border border-water-200 hover:border-water-400 hover:shadow-lg transition-all duration-200 rounded-2xl p-6"
                     >
                       <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105">
                         <Icon className="w-6 h-6" />
@@ -125,7 +115,7 @@ export function ServicesPage() {
                         {service.line}
                       </p>
                     </Card>
-                  </motion.div>
+                  </TiltCard>
                 </StaggerItem>
               )
             })}

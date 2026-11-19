@@ -6,6 +6,8 @@ import { Card } from '@/components/ui/Card'
 import { BrandMarquee } from '@/features/trust/BrandMarquee'
 import { Users, Droplet, MapPin, Phone, ShieldCheck, Sparkles } from 'lucide-react'
 import { FadeUp } from '@/components/motion/FadeUp'
+import { CountUp } from '@/components/motion/CountUp'
+import { TiltCard } from '@/components/motion/TiltCard'
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger'
 import { aboutPageData } from '@/data/about'
 import { siteData } from '@/data/site'
@@ -91,28 +93,33 @@ export function AboutPage() {
         </Container>
       </section>
 
-      {/* 3 Counters Grid with Motion */}
+      {/* 3 Counters Grid with Level A CountUp & Depth Tilt */}
       <section className="py-12 bg-white border-b border-water-100">
         <Container>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            {aboutPageData.counters.map((counter, idx) => (
-              <motion.div
-                key={counter.id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="p-6 bg-water-50/70 hover:bg-water-50 rounded-2xl border border-water-200 shadow-2xs transition-all card-hover-lift"
-              >
-                <span className="block text-3xl sm:text-4xl font-black text-water-900 font-condensed tracking-tight">
-                  {counter.value}
-                </span>
-                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-water-700 font-condensed mt-1 block">
-                  {counter.label}
-                </span>
-              </motion.div>
-            ))}
+            {aboutPageData.counters.map((counter, idx) => {
+              const numericValue = parseInt(counter.value.replace(/[^0-9]/g, ''), 10)
+              const suffix = counter.value.replace(/[0-9,]/g, '')
+
+              return (
+                <TiltCard key={counter.id} maxTilt={6} className="h-full">
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="p-6 h-full bg-water-50/70 hover:bg-water-50 rounded-2xl border border-water-200 shadow-2xs hover:shadow-lg transition-all card-hover-lift"
+                  >
+                    <span className="block text-3xl sm:text-4xl font-black text-water-900 font-condensed tracking-tight">
+                      <CountUp end={numericValue} suffix={suffix} duration={1.6} />
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-water-700 font-condensed mt-1 block">
+                      {counter.label}
+                    </span>
+                  </motion.div>
+                </TiltCard>
+              )
+            })}
           </div>
         </Container>
       </section>

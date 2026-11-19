@@ -105,14 +105,14 @@ export const ManagerChat: React.FC = () => {
 
   return (
     <>
-      {/* Floating Trigger Button (Bottom Right) */}
+      {/* Floating Trigger Button (Bottom Right) with 8s Gentle Depth Shadow Pulse */}
       <button
         ref={chatButtonRef}
         type="button"
         onClick={handleOpen}
         aria-label="Chat with our manager"
         aria-expanded={isOpen}
-        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2.5 p-1.5 sm:px-4 sm:py-2.5 rounded-full bg-water-700 hover:bg-water-800 text-white shadow-xl hover:shadow-2xl border-2 border-water-400/50 transition-transform active:scale-95 cursor-pointer ${
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2.5 p-1.5 sm:px-4 sm:py-2.5 rounded-full bg-water-700 hover:bg-water-800 text-white shadow-xl hover:shadow-2xl border-2 border-water-400/50 transition-transform active:scale-95 cursor-pointer animate-chat-pulse ${
           isOpen ? 'hidden' : 'flex'
         }`}
       >

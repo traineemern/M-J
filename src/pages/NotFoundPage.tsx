@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { SEO } from '@/lib/seo'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
+import { DepthFloat } from '@/components/motion/DepthFloat'
 import { siteData, mainNavLinks } from '@/data/site'
-import { Droplet, Phone, ArrowRight } from 'lucide-react'
+import { Phone, ArrowRight } from 'lucide-react'
 
 export function NotFoundPage() {
   return (
@@ -17,9 +18,19 @@ export function NotFoundPage() {
       <section className="min-h-[60vh] flex items-center bg-surface-muted py-20">
         <Container size="sm">
           <div className="text-center space-y-6">
-            {/* Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-water-50 text-water-600 mx-auto">
-              <Droplet className="w-10 h-10 fill-water-600" />
+            {/* Floating Logo with DepthFloat: up & down 6px, 4s loop, pauses on hover */}
+            <div className="flex justify-center">
+              <DepthFloat distance={6} duration={4}>
+                <div className="inline-flex items-center justify-center p-3 sm:p-4 rounded-2xl bg-water-900 border border-water-700 text-white shadow-xl">
+                  <img
+                    src="/images/mj-logo-white.png"
+                    alt="M&J Water Wells, Casnovia, Michigan"
+                    width={220}
+                    height={48}
+                    className="h-10 sm:h-12 w-auto object-contain"
+                  />
+                </div>
+              </DepthFloat>
             </div>
 
             {/* 404 Heading */}

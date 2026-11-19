@@ -162,17 +162,15 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
         ease: 'easeOut',
       }}
     >
-      {/* Numbered Node:
-          - Mobile: 40px circle on left
-          - Tablet/Desktop: 48px circle centered on the road
-      */}
+      {/* Numbered Node with 3D Depth Lift Effect on Active/Hover */}
       <div
         aria-hidden="true"
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-water-600 text-white flex items-center justify-center shrink-0 relative shadow-xs ring-4 ring-white z-20 sm:mb-1.5 transition-transform duration-150 group-hover:scale-108 group-hover:shadow-md cursor-pointer"
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-water-600 text-white flex items-center justify-center shrink-0 relative shadow-sm ring-4 ring-white z-20 sm:mb-1.5 transition-all duration-200 group-hover:-translate-y-1.5 group-hover:scale-110 group-hover:shadow-[0_12px_24px_-4px_rgba(2,132,199,0.45)] group-hover:ring-sky-300 cursor-pointer"
+        style={{ transformStyle: 'preserve-3d' }}
       >
-        <IconComponent className="w-5 h-5 text-white" />
+        <IconComponent className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-105" />
         {/* Step Number Badge */}
-        <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-water-800 text-white text-[10px] sm:text-[11px] font-black flex items-center justify-center ring-1 sm:ring-2 ring-white">
+        <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-water-800 text-white text-[10px] sm:text-[11px] font-black flex items-center justify-center ring-1 sm:ring-2 ring-white shadow-xs">
           {step.step}
         </span>
       </div>

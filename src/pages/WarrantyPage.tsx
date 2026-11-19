@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card'
 import { ShieldCheck, Wrench, FileText, ArrowRight } from 'lucide-react'
 import { FadeUp } from '@/components/motion/FadeUp'
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger'
+import { TiltCard } from '@/components/motion/TiltCard'
 import { Accordion } from '@/components/ui/Accordion'
 import { warrantyPageData } from '@/data/warranty'
 
@@ -46,17 +47,19 @@ export function WarrantyPage() {
 
               return (
                 <StaggerItem key={promise.id}>
-                  <Card variant="interactive" className="h-full p-6 text-center border-t-4 border-t-water-600 bg-water-50/40">
-                    <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mx-auto mb-3">
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <h2 className="text-lg font-bold text-water-900 font-condensed uppercase tracking-wide mb-1.5">
-                      {promise.title}
-                    </h2>
-                    <p className="text-sm text-water-800 leading-relaxed font-sans">
-                      {promise.line}
-                    </p>
-                  </Card>
+                  <TiltCard maxTilt={8} className="h-full">
+                    <Card variant="interactive" className="h-full p-6 text-center border-t-4 border-t-water-600 bg-water-50/40 hover:shadow-lg transition-all duration-200">
+                      <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mx-auto mb-3">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h2 className="text-lg font-bold text-water-900 font-condensed uppercase tracking-wide mb-1.5">
+                        {promise.title}
+                      </h2>
+                      <p className="text-sm text-water-800 leading-relaxed font-sans">
+                        {promise.line}
+                      </p>
+                    </Card>
+                  </TiltCard>
                 </StaggerItem>
               )
             })}

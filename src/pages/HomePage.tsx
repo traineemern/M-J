@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 import { motion, type Variants } from 'motion/react'
 import { DrillingVideo } from '@/features/drilling-video/DrillingVideo'
 import { useDrillingVideo } from '@/features/drilling-video/DrillingVideoContext'
+import { HeroScene } from '@/features/hero-3d/HeroScene'
+import { TiltCard } from '@/components/motion/TiltCard'
+import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import {
   Droplets,
   Building2,
@@ -64,7 +67,7 @@ export function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-water-800 via-water-900 to-water-950 text-white py-12 sm:py-16 lg:py-20">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Hero Image: Clean photo without video overlays */}
+            {/* Hero Visual: Level C 3D scene (desktop) with static poster fallback */}
             <div className="order-1 lg:order-2 lg:col-span-6">
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
@@ -72,10 +75,9 @@ export function HomePage() {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-white/25 bg-water-950 aspect-video ring-1 ring-white/10 card-hover-lift"
               >
-                <img
-                  src="/images/mj-crew-photo.jpg"
-                  alt="M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters"
-                  className="w-full h-full object-cover"
+                <HeroScene
+                  posterSrc="/images/mj-crew-photo.jpg"
+                  posterAlt="M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters"
                 />
               </motion.div>
             </div>
@@ -152,7 +154,7 @@ export function HomePage() {
           </FadeUp>
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {homeData.services.cards.map((card) => {
+            {homeData.services.cards.map((card, idx) => {
               const Icon =
                 card.icon === 'Droplets'
                   ? Droplets
@@ -160,50 +162,47 @@ export function HomePage() {
                     ? Building2
                     : Wrench
 
+              // Staggered parallax speed: subtle depth layering across the 3 cards
+              const parallaxSpeed = idx === 1 ? -0.06 : 0.04
+
               return (
                 <StaggerItem key={card.id}>
-                  <motion.div
-                    whileHover={
-                      isMobile || shouldReduceMotion
-                        ? undefined
-                        : { y: TRANSFORMS.cardHoverY }
-                    }
-                    transition={{ duration: 0.18, ease: EASINGS.easeOut }}
-                    className="h-full"
-                  >
-                    <Card
-                      variant="default"
-                      className="group flex flex-col h-full bg-water-50/50 border border-water-200 hover:border-water-400 hover:shadow-md transition-shadow duration-200 rounded-2xl p-6"
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105">
-                        <motion.div
-                          whileHover={
-                            isMobile || shouldReduceMotion
-                              ? undefined
-                              : { x: TRANSFORMS.iconNudgeX }
-                          }
-                          transition={{ duration: 0.15 }}
-                        >
-                          <Icon className="w-6 h-6" />
-                        </motion.div>
-                      </div>
-                      <h3 className="text-xl font-bold text-water-900 font-condensed uppercase tracking-wide mb-2">
-                        {card.title}
-                      </h3>
-                      <p className="text-sm text-water-800 leading-relaxed mb-4">
-                        {card.line}
-                      </p>
-                      <div className="mt-auto pt-3 border-t border-water-200/60">
-                        <Link
-                          to="/services"
-                          className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider font-condensed text-water-700 hover:text-water-900 transition-colors"
-                        >
-                          <span>Learn more</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </div>
-                    </Card>
-                  </motion.div>
+                  <ParallaxLayer speed={parallaxSpeed} className="h-full">
+                    <TiltCard maxTilt={6} className="h-full">
+                      <Card
+                        variant="default"
+                        className="group flex flex-col h-full bg-water-50/50 border border-water-200 hover:border-water-400 hover:shadow-lg transition-all duration-200 rounded-2xl p-6"
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105">
+                          <motion.div
+                            whileHover={
+                              isMobile || shouldReduceMotion
+                                ? undefined
+                                : { x: TRANSFORMS.iconNudgeX }
+                            }
+                            transition={{ duration: 0.15 }}
+                          >
+                            <Icon className="w-6 h-6 text-water-600" />
+                          </motion.div>
+                        </div>
+                        <h3 className="text-xl font-bold text-water-900 font-condensed uppercase tracking-wide mb-2">
+                          {card.title}
+                        </h3>
+                        <p className="text-sm text-water-800 leading-relaxed mb-4">
+                          {card.line}
+                        </p>
+                        <div className="mt-auto pt-3 border-t border-water-200/60">
+                          <Link
+                            to="/services"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider font-condensed text-water-700 hover:text-water-900 transition-colors"
+                          >
+                            <span>Learn more</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        </div>
+                      </Card>
+                    </TiltCard>
+                  </ParallaxLayer>
                 </StaggerItem>
               )
             })}

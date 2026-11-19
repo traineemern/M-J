@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/Footer'
 import { PhoneCTA } from '@/components/layout/PhoneCTA'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { PageTransition } from '@/components/motion/PageTransition'
+import { ScrollProgressBar } from '@/components/motion/ScrollProgressBar'
 import { EnquiryProvider } from '@/features/enquiry/EnquiryContext'
 import { EnquiryPopup } from '@/features/enquiry/EnquiryPopup'
 import { DrillingVideoProvider } from '@/features/drilling-video/DrillingVideoContext'
@@ -15,26 +16,28 @@ export function RootLayout() {
 
   return (
     <EnquiryProvider>
-        <DrillingVideoProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">
-              <PageTransition key={location.pathname}>
-                <Outlet />
-              </PageTransition>
-            </main>
-            <Footer />
-            <PhoneCTA />
-            <ScrollToTop />
-            <ScrollRestoration />
+      <DrillingVideoProvider>
+        <div className="flex flex-col min-h-screen">
+          {/* Top Scroll Progress Line (All Pages) */}
+          <ScrollProgressBar />
+          <Header />
+          <main className="flex-1">
+            <PageTransition key={location.pathname}>
+              <Outlet />
+            </PageTransition>
+          </main>
+          <Footer />
+          <PhoneCTA />
+          <ScrollToTop />
+          <ScrollRestoration />
 
           {/* Global Modals & Floating Tools */}
           <EnquiryPopup />
           <WatchDemoModal />
           <ManagerChat />
-      </div>
-    </DrillingVideoProvider>
-    </EnquiryProvider >
+        </div>
+      </DrillingVideoProvider>
+    </EnquiryProvider>
   )
 }
 

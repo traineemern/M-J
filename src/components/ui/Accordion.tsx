@@ -31,7 +31,7 @@ export function Accordion({
       {items.map((item) => (
         <details
           key={item.id}
-          className="group rounded-xl border border-water-200 bg-white shadow-2xs overflow-hidden transition-colors open:bg-water-50/40"
+          className="group rounded-xl border border-water-200 bg-white shadow-2xs overflow-hidden transition-all duration-200 open:bg-water-50/40 open:shadow-lg open:shadow-water-900/10 open:-translate-y-0.5"
         >
           <summary
             className={`flex w-full items-center justify-between p-4 sm:p-5 text-left font-bold text-water-900 hover:text-water-700 transition-colors cursor-pointer gap-4 select-none list-none [&::-webkit-details-marker]:hidden font-condensed text-lg uppercase tracking-wide ${summaryClassName}`}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Droplet, Phone, Mail, MapPin } from 'lucide-react'
+import { Phone, Mail, MapPin } from 'lucide-react'
 import { siteData, mainNavLinks } from '@/data/site'
 import { Container } from '@/components/ui/Container'
 import { PaymentLogos } from '@/features/trust/PaymentLogos'
@@ -11,21 +11,18 @@ export function Footer() {
     <footer className="bg-water-950 text-slate-300 pt-12 pb-16 border-t-4 border-water-600">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-water-900">
-          {/* Column 1: Company Profile (No paragraph text) */}
+          {/* Column 1: Company Profile with White Logo */}
           <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-water-600 flex items-center justify-center text-white shadow-xs">
-                <Droplet className="w-5 h-5 fill-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-black text-white tracking-tight font-condensed uppercase">
-                  M&J Water Wells
-                </span>
-                <span className="text-xs text-aqua font-bold tracking-wider uppercase font-condensed">
-                  Casnovia, Michigan
-                </span>
-              </div>
-            </div>
+            <Link to="/" className="inline-block group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-400 rounded-lg">
+              <img
+                src="/images/mj-logo-white.png"
+                alt="M&J Water Wells, Casnovia, Michigan"
+                width={220}
+                height={48}
+                loading="lazy"
+                className="h-10 w-auto object-contain group-hover:scale-102 transition-transform duration-200"
+              />
+            </Link>
             <div className="text-xs text-slate-400 font-medium">
               <span>{siteData.licenseNumberPlaceholder}</span>
             </div>

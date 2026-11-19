@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Phone, Menu, Droplet } from 'lucide-react'
+import { Phone, Menu } from 'lucide-react'
 import { siteData, mainNavLinks } from '@/data/site'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
@@ -28,45 +28,41 @@ export function Header() {
 
   return (
     <>
-      {/* Main Sticky Header */}
-      {/* Uses transform and opacity only for smooth 60fps performance */}
+      {/* Main Sticky Header in Blue Water Theme */}
       <header
-        className={`sticky top-0 z-30 transition-[background-color,backdrop-filter,box-shadow,padding] duration-200 border-b ${isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-xs py-2 border-water-200/80'
-          : 'bg-white py-3.5 border-water-100'
-          }`}
+        className={`sticky top-0 z-30 transition-[background-color,backdrop-filter,box-shadow,padding] duration-200 border-b ${
+          isScrolled
+            ? 'bg-water-900/95 backdrop-blur-md shadow-md py-2 border-water-800/80 text-white'
+            : 'bg-water-900 py-3 sm:py-3.5 border-water-800 text-white'
+        }`}
       >
         <Container>
           <div className="flex items-center justify-between">
-            {/* Brand Logo */}
+            {/* Brand Logo: White Logo with Light-Blue Outline on Blue Background */}
             <Link
               to="/"
-              className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-600 rounded-lg p-1"
+              className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-300 rounded-lg p-0.5"
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-water-600 to-water-800 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-200">
-                <Droplet className="w-5 h-5 text-white fill-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-black tracking-tight text-water-900 font-condensed uppercase group-hover:text-water-700 transition-colors">
-                  M&J Water Wells
-                </span>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-water-700 -mt-1 font-condensed">
-                  Casnovia, Michigan
-                </span>
-              </div>
+              <img
+                src="/images/mj-logo-white.png"
+                alt="M&J Water Wells, Casnovia, Michigan"
+                width={220}
+                height={48}
+                className="h-9 sm:h-11 w-auto min-w-[160px] max-w-[220px] object-contain group-hover:scale-102 transition-transform duration-200"
+              />
             </Link>
 
             {/* Desktop Navigation Links */}
-            {/* Nav links: underline draws in from left to right on hover (CSS transition, 200 ms) */}
             <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
               {mainNavLinks.map((link) => (
                 <NavLink
                   key={link.href}
                   to={link.href}
                   className={({ isActive }) =>
-                    `relative px-3 py-1.5 text-base font-bold uppercase tracking-wider font-condensed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-600 rounded after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-water-600 after:transition-[width] after:duration-200 ${isActive
-                      ? 'text-water-700 after:w-full font-black'
-                      : 'text-water-900 hover:text-water-700 after:w-0 hover:after:w-full'
+                    `relative px-3 py-1.5 text-base font-bold uppercase tracking-wider font-condensed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 rounded after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-sky-400 after:transition-[width] after:duration-200 ${
+                      isActive
+                        ? 'text-white after:w-full font-black'
+                        : 'text-water-100 hover:text-white after:w-0 hover:after:w-full'
                     }`
                   }
                 >
@@ -75,39 +71,39 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Phone Number with Gentle 6s Pulse & Primary Action */}
+            {/* Phone Number with Gentle Pulse & Primary Action */}
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href={`tel:${siteData.phoneClean}`}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-water-700 hover:text-water-900 font-bold font-condensed text-base uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-600 animate-pulse-slow cursor-pointer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-water-100 hover:text-white font-bold font-condensed text-base uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 cursor-pointer"
                 title="Tap to call M&J Water Wells"
               >
-                <Phone className="w-4 h-4 text-water-700 fill-current" />
+                <Phone className="w-4 h-4 text-sky-400 fill-current" />
                 <span>{siteData.phone}</span>
               </a>
               <Button
                 onClick={() => openEnquiry()}
                 variant="primary"
                 size={isScrolled ? 'sm' : 'md'}
-                className="font-condensed uppercase tracking-wider cursor-pointer"
+                className="font-condensed uppercase tracking-wider cursor-pointer shadow-sm hover:shadow-md"
               >
                 Free Estimate
               </Button>
             </div>
 
-            {/* Mobile Hamburger Trigger */}
+            {/* Mobile Actions & Hamburger Trigger */}
             <div className="flex items-center gap-2 lg:hidden">
               <a
                 href={`tel:${siteData.phoneClean}`}
-                className="p-2 rounded-lg text-water-700 hover:bg-water-100 transition-colors animate-pulse-slow"
+                className="p-2 rounded-lg text-water-100 hover:text-white hover:bg-water-800 transition-colors"
                 aria-label="Call (616) 675-4875"
               >
-                <Phone className="w-5 h-5 fill-current" />
+                <Phone className="w-5 h-5 fill-current text-sky-400" />
               </a>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="p-2 rounded-lg text-water-900 hover:bg-water-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-600 cursor-pointer"
+                className="p-2 rounded-lg text-white hover:bg-water-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 cursor-pointer"
                 aria-label="Open Navigation Menu"
               >
                 <Menu className="w-6 h-6" />
