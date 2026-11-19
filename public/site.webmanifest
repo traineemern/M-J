@@ -1,0 +1,16 @@
+{
+  "name": "M&J Water Wells",
+  "short_name": "M&J Wells",
+  "description": "West Michigan's Well Drilling Specialists in Casnovia, Sand Lake, Newaygo, Fremont & Hesperia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#C41E0F",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

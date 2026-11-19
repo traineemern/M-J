@@ -1,0 +1,97 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/water-well-drilling-services-michigan.html",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/well-drilling-grand-rapids-warranty.html",
+      "destination": "/warranty",
+      "permanent": true
+    },
+    {
+      "source": "/well-drilling/water-well-drilling-west-michigan-contact-us.html",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/about-our-well-drilling-company.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/well-drilling/newaygo-mi-well-drilling-contractor.html",
+      "destination": "/areas/newaygo",
+      "permanent": true
+    },
+    {
+      "source": "/water-well-drilling-grand-rapids-questions-answers.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/water-well-drilling-questions-answers.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/well-drilling/water-well-drilling-questions-answers.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/questions-answers.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/faq.html",
+      "destination": "/faq",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://formspree.io;"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

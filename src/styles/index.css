@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Water Theme Scale */
+  --color-water-50: #EFF8FC;
+  --color-water-100: #D6EEF8;
+  --color-water-200: #A9DCF0;
+  --color-water-300: #6EC4E6;
+  --color-water-400: #36A8D6;
+  --color-water-500: #1A8DC2;
+  --color-water-600: #1270A3;
+  --color-water-700: #0E5A84;
+  --color-water-800: #0B4466;
+  --color-water-900: #082F48;
+  --color-water-950: #051D2E;
+
+  /* Complementary Accents & Geologic Tokens */
+  --color-aqua: #2EC4B6;
+  --color-sand: #E9D8B4;
+  --color-soil-dark: #6B4F32;
+  --color-rock: #5B6470;
+  --color-aquifer: #0A6E9E;
+
+  /* Neutrals & Functional Tokens (WCAG AA & AAA compliant) */
+  --color-ink: #334E68;
+  --color-ink-dark: #082F48;
+  --color-ink-light: #627D98;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EFF8FC;
+  --color-surface-subtle: #F7FBFE;
+  --color-button-dark: #0B4466;
+  --color-button-dark-hover: #082F48;
+
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --font-condensed: 'Oswald', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html, body {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  background-color: var(--color-water-50);
+  color: var(--color-water-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gentlePulse {
+  0%, 88%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  94% {
+    transform: scale(1.04);
+    opacity: 0.95;
+  }
+}
+
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shimmerEffect {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-pulse-slow {
+  animation: gentlePulse 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow:hover {
+  animation-play-state: paused;
+}
+
+.animate-float {
+  animation: floatSoft 4s ease-in-out infinite;
+}
+
+.card-hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(8, 47, 72, 0.12), 0 4px 12px -2px rgba(8, 47, 72, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-pulse-slow,
+  .animate-float,
+  .card-hover-lift:hover {
+    animation: none !important;
+    transform: none !important;
+  }
+}
