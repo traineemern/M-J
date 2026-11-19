@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { z } from 'zod'
-import { CheckCircle2, AlertCircle, Phone, ArrowRight, Loader2 } from 'lucide-react'
+import { AlertCircle, Phone, ArrowRight, Loader2 } from 'lucide-react'
+import { SuccessCheck } from './SuccessCheck'
 import { siteData } from '@/data/site'
 
 const enquirySchema = z.object({
@@ -141,9 +142,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   if (formState === 'success') {
     return (
       <div className="text-center py-6 space-y-4">
-        <div className="w-14 h-14 rounded-full bg-water-100 text-water-700 mx-auto flex items-center justify-center">
-          <CheckCircle2 className="w-8 h-8 text-water-600" />
-        </div>
+        <SuccessCheck />
         <h3 className="text-2xl font-black text-water-900 font-condensed uppercase tracking-tight">
           Estimate Request Received
         </h3>

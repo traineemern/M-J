@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { X, MessageSquare, ArrowRight } from 'lucide-react'
 import { chatData, type ChatAction, type ChatQuestionItem } from '@/data/chat'
 import { ManagerAvatar } from './ManagerAvatar'
@@ -31,6 +32,21 @@ export const ManagerChat: React.FC = () => {
   const chatButtonRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // AutoAnimate for message bubbles and option buttons (duration 200ms, disabled under reduced motion)
+  const [messagesListRef, enableMessages] = useAutoAnimate<HTMLDivElement>({
+    duration: 200,
+    easing: 'ease-in-out',
+  })
+  const [optionsListRef, enableOptions] = useAutoAnimate<HTMLDivElement>({
+    duration: 200,
+    easing: 'ease-in-out',
+  })
+
+  useEffect(() => {
+    enableMessages(!shouldReduceMotion)
+    enableOptions(!shouldReduceMotion)
+  }, [enableMessages, enableOptions, shouldReduceMotion])
 
   // Scroll to bottom of message stream
   useEffect(() => {
@@ -188,6 +204,7 @@ export const ManagerChat: React.FC = () => {
 
               {/* Messages Scroll Area */}
               <div
+                ref={messagesListRef}
                 className="flex-1 p-4 overflow-y-auto space-y-3 bg-water-50/40"
                 aria-live="polite"
               >
@@ -224,7 +241,10 @@ export const ManagerChat: React.FC = () => {
                 <p className="text-[11px] font-bold text-water-600 font-condensed uppercase tracking-wider mb-2">
                   Choose a question:
                 </p>
-                <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+                <div
+                  ref={optionsListRef}
+                  className="max-h-36 overflow-y-auto space-y-1.5 pr-1"
+                >
                   {chatData.questions.map((q) => (
                     <button
                       key={q.id}

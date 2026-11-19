@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, type Variants } from 'motion/react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { STAGGERS, DURATIONS, EASINGS, TRANSFORMS } from '@/lib/motion'
@@ -15,6 +15,17 @@ export function StaggerContainer({
   staggerDelay = STAGGERS.grid, // 80ms
 }: StaggerContainerProps) {
   const shouldReduceMotion = useReducedMotion()
+  const [forcedRevealed, setForcedRevealed] = useState(false)
+
+  useEffect(() => {
+    if (shouldReduceMotion) return
+
+    const timer = setTimeout(() => {
+      setForcedRevealed(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [shouldReduceMotion])
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>
@@ -33,9 +44,10 @@ export function StaggerContainer({
   return (
     <motion.div
       variants={containerVariants}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
+      initial={forcedRevealed ? 'show' : 'hidden'}
+      animate={forcedRevealed ? 'show' : undefined}
+      whileInView={forcedRevealed ? undefined : 'show'}
+      viewport={{ once: true, amount: 0.05, margin: '0px 0px -10% 0px' }}
       className={className}
     >
       {children}

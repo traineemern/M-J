@@ -28,17 +28,25 @@ export function CountUp({
     const currentEl = nodeRef.current
     if (!currentEl) return
 
+    // Failsafe: start counting after 1.5s even if not intersected
+    const failsafe = setTimeout(() => {
+      setHasStarted(true)
+    }, 1500)
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasStarted) {
           setHasStarted(true)
         }
       },
-      { threshold: 0.3 },
+      { threshold: 0.05 }
     )
 
     observer.observe(currentEl)
-    return () => observer.disconnect()
+    return () => {
+      clearTimeout(failsafe)
+      observer.disconnect()
+    }
   }, [end, hasStarted, shouldReduceMotion])
 
   useEffect(() => {

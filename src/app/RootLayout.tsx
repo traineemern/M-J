@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ScrollRestoration, Outlet, useLocation } from 'react-router-dom'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -13,6 +14,24 @@ import { ManagerChat } from '@/features/chat/ManagerChat'
 
 export function RootLayout() {
   const location = useLocation()
+
+  useEffect(() => {
+    // Only dynamically load & initialize Lenis on desktop (min-width 1024px, pointer: fine) when reduced motion is off
+    if (typeof window === 'undefined') return
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (isDesktop && hasFinePointer && !prefersReduced) {
+      let cleanup: (() => void) | undefined
+      import('@/lib/smoothScroll').then((m) => {
+        cleanup = m.initSmoothScroll()
+      })
+      return () => {
+        cleanup?.()
+      }
+    }
+  }, [])
 
   return (
     <EnquiryProvider>
