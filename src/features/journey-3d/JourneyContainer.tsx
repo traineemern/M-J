@@ -17,32 +17,10 @@ import { TiltCard } from '@/components/motion/TiltCard'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useDrillingVideo } from '@/features/drilling-video/DrillingVideoContext'
 import { useEnquiry } from '@/features/enquiry/EnquiryContext'
+import { shouldEnable3DJourney } from './riverUtils'
 
 // Lazy load the 3D canvas so Three.js bundle only loads on desktop when allowed
 const LazyJourneyCanvas = React.lazy(() => import('./JourneyCanvas'))
-
-export function hasWebGLSupport(): boolean {
-  if (typeof window === 'undefined') return false
-  try {
-    const canvas = document.createElement('canvas')
-    return !!(
-      window.WebGLRenderingContext &&
-      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
-    )
-  } catch {
-    return false
-  }
-}
-
-export function shouldEnable3DJourney(): boolean {
-  if (typeof window === 'undefined') return false
-  if (window.innerWidth < 768) return false
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (prefersReduced) return false
-  const nav = navigator as unknown as { connection?: { saveData?: boolean } }
-  if (nav.connection?.saveData === true) return false
-  return hasWebGLSupport()
-}
 
 export const JourneyContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -98,7 +76,7 @@ export const JourneyContainer: React.FC = () => {
       ref={containerRef}
       className={`relative w-full ${canRender3D ? 'min-h-[600vh]' : 'min-h-auto'}`}
     >
-      {/* 3D WebGL Background Scene: Desktop only, under 200KB gzipped, capped at 400 particles */}
+      {/* 3D WebGL Background Scene: Desktop only, under 150KB gzipped, draw calls < 40 */}
       {canRender3D ? (
         <Suspense fallback={null}>
           <LazyJourneyCanvas scrollProgress={scrollProgress} />
@@ -106,8 +84,8 @@ export const JourneyContainer: React.FC = () => {
       ) : (
         /* Static Still Background Fallback for Mobile / Reduced Motion / No WebGL */
         <div
-          className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center opacity-40"
-          style={{ backgroundImage: `url('/images/journey-poster.webp')` }}
+          className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center opacity-60"
+          style={{ backgroundImage: `url('/images/river-poster.webp')` }}
           aria-hidden="true"
         />
       )}
@@ -193,7 +171,7 @@ export const JourneyContainer: React.FC = () => {
       >
         <Container>
           <div className="text-center max-w-xl mx-auto mb-10">
-            <h2 className="text-3xl sm:text-5xl font-black font-condensed uppercase tracking-tight text-white drop-shadow-md">
+            <h2 className="text-3xl sm:text-5xl font-black font-condensed uppercase tracking-tight text-water-900 drop-shadow-sm">
               Our Services
             </h2>
           </div>
@@ -288,10 +266,10 @@ export const JourneyContainer: React.FC = () => {
       >
         <Container>
           <div className="max-w-2xl mx-auto text-center space-y-4">
-            <h2 className="text-4xl sm:text-6xl font-black font-condensed uppercase tracking-tight text-white drop-shadow-xl">
+            <h2 className="text-4xl sm:text-6xl font-black font-condensed uppercase tracking-tight text-water-900 drop-shadow-md">
               Step into clean water.
             </h2>
-            <p className="text-base sm:text-lg text-sky-100 max-w-md mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-water-800 font-medium max-w-md mx-auto leading-relaxed">
               Pressurized, crystal clear, dependable water flowing directly to your faucets.
             </p>
           </div>
@@ -313,7 +291,7 @@ export const JourneyContainer: React.FC = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-sky-400/20 animate-pulse opacity-30 pointer-events-none" />
 
             {/* M&J White Logo Centered */}
-            <div className="flex justify-center relative z-10">
+            <div className="flex justify-center relative z-10 bg-water-900/90 py-4 px-6 rounded-2xl shadow-lg border border-water-800">
               <img
                 src="/images/mj-logo-white.png"
                 alt="M&J Water Wells, Casnovia, Michigan"
@@ -324,7 +302,7 @@ export const JourneyContainer: React.FC = () => {
             </div>
 
             <div className="space-y-4 relative z-10">
-              <h2 className="text-2xl sm:text-3xl font-black font-condensed uppercase tracking-tight text-white">
+              <h2 className="text-2xl sm:text-3xl font-black font-condensed uppercase tracking-tight text-water-900">
                 Ready for Fresh Well Water?
               </h2>
 

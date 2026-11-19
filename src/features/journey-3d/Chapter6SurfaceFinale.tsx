@@ -11,15 +11,17 @@ export const Chapter6SurfaceFinale: React.FC<Chapter6SurfaceFinaleProps> = ({
 }) => {
   const rippleMeshRef = useRef<THREE.Mesh>(null)
 
-  // Visible during Chapter 6 finale (0.82 to 1.0)
-  if (scrollProgress < 0.82) return null
-
+  // Unconditional hook
   useFrame((state) => {
+    if (scrollProgress < 0.82) return
     if (!rippleMeshRef.current) return
     const t = state.clock.getElapsedTime()
     // Soft gentle surface shimmer
     rippleMeshRef.current.rotation.z = t * 0.05
   })
+
+  // Visible during Chapter 6 finale (0.82 to 1.0)
+  if (scrollProgress < 0.82) return null
 
   return (
     <group position={[0, -0.5, -4]}>

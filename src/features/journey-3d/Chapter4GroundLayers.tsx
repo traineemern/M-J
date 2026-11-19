@@ -11,11 +11,9 @@ export const Chapter4GroundLayers: React.FC<Chapter4GroundLayersProps> = ({
 }) => {
   const waveMeshRef = useRef<THREE.Mesh>(null)
 
-  // Visible during Chapter 4 descent (0.40 to 0.72)
-  if (scrollProgress < 0.38 || scrollProgress > 0.75) return null
-
-  // Animated wave vertices for Ground Water aquifer surface
+  // Unconditional hook: check visibility inside callback to adhere strictly to rules-of-hooks
   useFrame((state) => {
+    if (scrollProgress < 0.38 || scrollProgress > 0.75) return
     if (!waveMeshRef.current) return
     const t = state.clock.getElapsedTime()
     const geom = waveMeshRef.current.geometry as THREE.PlaneGeometry
@@ -30,6 +28,9 @@ export const Chapter4GroundLayers: React.FC<Chapter4GroundLayersProps> = ({
     }
     posAttr.needsUpdate = true
   })
+
+  // Visible during Chapter 4 descent (0.40 to 0.72)
+  if (scrollProgress < 0.38 || scrollProgress > 0.75) return null
 
   return (
     <group position={[0, -2, -5]}>

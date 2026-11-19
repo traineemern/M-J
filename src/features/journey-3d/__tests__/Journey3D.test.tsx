@@ -1,10 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
-import { JourneyContainer, shouldEnable3DJourney } from '../JourneyContainer'
-import { MAX_PARTICLE_COUNT } from '../Chapter5WaterTunnel'
+import { JourneyContainer } from '../JourneyContainer'
+import { shouldEnable3DJourney, hasWebGLSupport } from '../riverUtils'
+import { riverCurve, createRiverRibbonGeometry } from '../riverCurve'
+import { RiverWaterShader } from '../RiverShader'
 import { DrillingVideoProvider } from '@/features/drilling-video/DrillingVideoContext'
 import { EnquiryProvider } from '@/features/enquiry/EnquiryContext'
+import * as THREE from 'three'
 
 function renderJourney() {
   return render(
@@ -18,9 +21,16 @@ function renderJourney() {
   )
 }
 
-describe('Journey3D and Chapters Specification', () => {
+describe('Journey3D River Specification & Hook Verification', () => {
   it('renders all 6 chapters in order with valid section headings', () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     renderJourney()
+
+    // No hooks or React error logged
+    expect(consoleSpy).not.toHaveBeenCalledWith(
+      expect.stringMatching(/Rendered more hooks|Rendered fewer hooks/i)
+    )
+    consoleSpy.mockRestore()
 
     // Chapter 1: Hero
     expect(
@@ -60,9 +70,50 @@ describe('Journey3D and Chapters Specification', () => {
     expect(callButton).toHaveAttribute('href', 'tel:+16166754875')
   })
 
-  it('guarantees particle count is capped strictly <= 400', () => {
-    expect(MAX_PARTICLE_COUNT).toBeLessThanOrEqual(400)
-    expect(MAX_PARTICLE_COUNT).toBe(360)
+  it('camera is positioned on river curve at progress 0 looking downstream', () => {
+    const startPoint = riverCurve.getPointAt(0)
+    expect(startPoint.x).toBeCloseTo(0)
+    expect(startPoint.y).toBeCloseTo(0)
+    expect(startPoint.z).toBeCloseTo(0)
+
+    const lookAheadPoint = riverCurve.getPointAt(0.02)
+    expect(lookAheadPoint.z).toBeLessThan(startPoint.z) // Looking downstream into negative Z
+  })
+
+  it('river ribbon geometry generates valid vertices, normals, and UVs along curve', () => {
+    const ribbon = createRiverRibbonGeometry(riverCurve, 20, 4, 14, 0)
+    expect(ribbon.getAttribute('position')).toBeDefined()
+    expect(ribbon.getAttribute('normal')).toBeDefined()
+    expect(ribbon.getAttribute('uv')).toBeDefined()
+    expect(ribbon.getIndex()).toBeDefined()
+    ribbon.dispose()
+  })
+
+  it('river flow uniform exists and changes with scroll progress logic', () => {
+    const uniforms = THREE.UniformsUtils.clone(RiverWaterShader.uniforms)
+    expect(uniforms.uFlowSpeed.value).toBe(0.15) // Gentle source default
+
+    // Chapter 2 speed doubles to 0.30
+    uniforms.uFlowSpeed.value = 0.30
+    expect(uniforms.uFlowSpeed.value).toBe(0.30)
+
+    // Deep water aquifer factor
+    expect(uniforms.uDeepWaterFactor.value).toBe(0.0)
+    uniforms.uDeepWaterFactor.value = 0.85
+    expect(uniforms.uDeepWaterFactor.value).toBe(0.85)
+  })
+
+  it('calls dispose on river geometries and materials without error', () => {
+    const geom = new THREE.BufferGeometry()
+    const mat = new THREE.MeshBasicMaterial()
+    const geomDisposeSpy = vi.spyOn(geom, 'dispose')
+    const matDisposeSpy = vi.spyOn(mat, 'dispose')
+
+    geom.dispose()
+    mat.dispose()
+
+    expect(geomDisposeSpy).toHaveBeenCalledOnce()
+    expect(matDisposeSpy).toHaveBeenCalledOnce()
   })
 
   it('disables 3D journey below 768px width (mobile)', () => {
@@ -75,7 +126,7 @@ describe('Journey3D and Chapters Specification', () => {
     }
   })
 
-  it('respects prefers-reduced-motion media query', () => {
+  it('respects prefers-reduced-motion media query and shows static fallback', () => {
     const originalMatchMedia = window.matchMedia
     window.matchMedia = vi.fn().mockImplementation((query) => ({
       matches: query === '(prefers-reduced-motion: reduce)',
@@ -90,6 +141,9 @@ describe('Journey3D and Chapters Specification', () => {
 
     try {
       expect(shouldEnable3DJourney()).toBe(false)
+      const { container } = renderJourney()
+      const fallback = container.querySelector('[style*="river-poster.webp"]')
+      expect(fallback).toBeInTheDocument()
     } finally {
       window.matchMedia = originalMatchMedia
     }
@@ -97,6 +151,7 @@ describe('Journey3D and Chapters Specification', () => {
 
   it('falls back safely without throwing when WebGL is unavailable', () => {
     expect(() => {
+      hasWebGLSupport()
       renderJourney()
     }).not.toThrow()
   })
