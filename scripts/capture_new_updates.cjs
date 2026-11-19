@@ -65,9 +65,14 @@ if (!fs.existsSync(ARTIFACT_DIR)) {
     fullPage: false
   });
 
-  const heroDemoCard = await page.$('div[aria-label="Open Watch Demo popup window"]');
-  if (heroDemoCard) {
-    await heroDemoCard.click();
+  // Click Watch Demo button in mobile hero
+  const watchDemoMobileBtn = await page.evaluateHandle(() => {
+    const buttons = Array.from(document.querySelectorAll('button, a'));
+    return buttons.find(b => b.textContent && b.textContent.includes('Watch Demo'));
+  });
+
+  if (watchDemoMobileBtn && watchDemoMobileBtn.asElement()) {
+    await watchDemoMobileBtn.asElement().click();
     await new Promise(r => setTimeout(r, 700));
     await page.screenshot({
       path: path.join(ARTIFACT_DIR, 'watch-demo-modal-rounded-375px.png'),

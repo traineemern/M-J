@@ -18,7 +18,7 @@ const iconMap = {
 
 export function AboutPage() {
   return (
-    <>
+    <div className="font-raleway">
       <SEO
         title="About M&J Water Wells | Family-Owned Well Drilling in Casnovia, MI"
         description="Learn about M&J Water Wells — a family-owned rotary well drilling company in Casnovia, MI serving West Michigan with dependable groundwater systems."
@@ -159,7 +159,7 @@ export function AboutPage() {
 
       {/* Trust Brands */}
       <BrandMarquee compact={true} />
-    </>
+    </div>
   )
 }
 

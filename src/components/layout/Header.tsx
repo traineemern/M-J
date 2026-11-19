@@ -4,7 +4,6 @@ import { Phone, Menu, Droplet } from 'lucide-react'
 import { siteData, mainNavLinks } from '@/data/site'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
-import { UtilityBar } from './UtilityBar'
 import { MobileNav } from './MobileNav'
 import { useEnquiry } from '@/features/enquiry/EnquiryContext'
 
@@ -29,9 +28,6 @@ export function Header() {
 
   return (
     <>
-      {/* Top Utility Bar */}
-      <UtilityBar />
-
       {/* Main Sticky Header */}
       {/* Uses transform and opacity only for smooth 60fps performance */}
       <header

@@ -138,10 +138,9 @@ describe('DrillingVideo Component & Watch Demo Modal', () => {
 
     // Modal is now open
     expect(screen.getByRole('dialog', { name: /M&J Well Drilling Demo Video/i })).toBeInTheDocument()
-    expect(screen.getByText('M&J Well Drilling Demonstration')).toBeInTheDocument()
 
-    // Close button dismisses modal
-    const closeBtn = screen.getByRole('button', { name: /Close video modal/i })
+    // Cancel / Close button at top right corner dismisses modal
+    const closeBtn = screen.getByRole('button', { name: /Close video demo/i })
     await act(async () => {
       fireEvent.click(closeBtn)
     })

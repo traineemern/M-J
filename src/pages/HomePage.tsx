@@ -64,57 +64,31 @@ export function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-water-800 via-water-900 to-water-950 text-white py-12 sm:py-16 lg:py-20">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Watch Demo Video Card with Provided Photo: order-1 on mobile, order-2 on desktop */}
+            {/* Hero Image: Clean photo without video overlays */}
             <div className="order-1 lg:order-2 lg:col-span-6">
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => openVideoModal()}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    openVideoModal()
-                  }
-                }}
-                className="relative group rounded-3xl overflow-hidden shadow-2xl border-2 border-white/25 bg-water-950 aspect-video cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-water-400 transition-all card-hover-lift ring-1 ring-white/10"
-                aria-label="Open Watch Demo popup window"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-white/25 bg-water-950 aspect-video ring-1 ring-white/10 card-hover-lift"
               >
                 <img
                   src="/images/mj-crew-photo.jpg"
                   alt="M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters"
-                  className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-water-950/90 via-water-950/35 to-transparent flex flex-col justify-end p-5 sm:p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-water-500 text-water-950 flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:bg-water-400 transition-all duration-300 ring-4 ring-white/30">
-                      <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current translate-x-0.5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-full bg-water-400/30 text-white border border-water-300/40 backdrop-blur-xs font-condensed">
-                          Casnovia Crew & Rig
-                        </span>
-                        <span className="text-xs text-water-200 font-medium font-sans">0:51 Demo</span>
-                      </div>
-                      <p className="font-condensed font-black uppercase tracking-wider text-base sm:text-2xl text-white mt-1 drop-shadow-sm">
-                        Watch Drilling Demo
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </motion.div>
             </div>
 
             {/* Typography and CTAs */}
             <div className="order-2 lg:order-1 lg:col-span-6 space-y-5 text-center lg:text-left">
-              {/* Line-by-line headline */}
+              {/* Line-by-line headline with accessible full text */}
               <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black font-condensed uppercase tracking-tight leading-[1.05]">
+                <span className="sr-only">{homeData.hero.headline}</span>
                 {shouldReduceMotion ? (
                   homeData.hero.headline
                 ) : (
-                  <span className="inline-block">
+                  <span aria-hidden="true" className="inline-block">
                     {headlineWords.map((word, idx) => (
                       <motion.span
                         key={idx}
