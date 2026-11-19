@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import { motion, type Variants } from 'motion/react'
 import { DrillingVideo } from '@/features/drilling-video/DrillingVideo'
 import { useDrillingVideo } from '@/features/drilling-video/DrillingVideoContext'
-import { HeroScene } from '@/features/hero-3d/HeroScene'
 import { TiltCard } from '@/components/motion/TiltCard'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
+import { FaqCarousel } from '@/features/faq-carousel/FaqCarousel'
+import { faqData } from '@/data/faq'
 import {
   Droplets,
   Building2,
@@ -67,7 +68,7 @@ export function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-water-800 via-water-900 to-water-950 text-white py-12 sm:py-16 lg:py-20">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Hero Visual: Level C 3D scene (desktop) with static poster fallback */}
+            {/* Hero Image: Clean crew and rig photo */}
             <div className="order-1 lg:order-2 lg:col-span-6">
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
@@ -75,9 +76,10 @@ export function HomePage() {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-white/25 bg-water-950 aspect-video ring-1 ring-white/10 card-hover-lift"
               >
-                <HeroScene
-                  posterSrc="/images/mj-crew-photo.jpg"
-                  posterAlt="M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters"
+                <img
+                  src="/images/mj-crew-photo.jpg"
+                  alt="M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters"
+                  className="w-full h-full object-cover"
                 />
               </motion.div>
             </div>
@@ -357,8 +359,31 @@ export function HomePage() {
         </Container>
       </section>
 
-      {/* 8. CONTACT FORM */}
-      <section id="contact-estimate" className="py-14 sm:py-20 bg-white">
+      {/* 8. COMMON QUESTIONS (3D FAQ Carousel with first 3 items) */}
+      <section className="py-14 sm:py-20 bg-white border-b border-water-100 overflow-hidden">
+        <Container>
+          <FadeUp className="text-center max-w-xl mx-auto mb-10">
+            <h2 className="text-3xl sm:text-4xl font-black text-water-900 font-condensed uppercase tracking-tight">
+              Common questions
+            </h2>
+          </FadeUp>
+
+          <FaqCarousel items={faqData.slice(0, 3)} />
+
+          <div className="mt-8 text-center">
+            <Link
+              to="/faq"
+              className="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider font-condensed text-water-700 hover:text-water-900 transition-colors"
+            >
+              <span>See all questions</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* 9. CONTACT FORM */}
+      <section id="contact-estimate" className="py-14 sm:py-20 bg-water-50/50">
         <Container size="md">
           <ContactForm
             id="estimate-form"

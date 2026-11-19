@@ -13,18 +13,18 @@ export const motionPageSettings: Record<string, PageMotionConfig> = {
   '/': {
     path: '/',
     name: 'Home',
-    levels: ['Level A', 'Level B', 'Level C'],
+    levels: ['Level A', 'Level B'],
     effects: [
       'Top scroll progress bar (100% on page end)',
-      'Level C lazy-loaded 3D hero scene (water droplet and well casing in R3F/Three)',
-      'Static crew photo poster fallback below 768px, reduced motion, or data-saver',
+      'Clean crew photo image hero card (Level C 3D sim dropped to photo)',
+      'Level B 3D card-stack carousel for common questions (first 3 questions)',
       'Level B 3D card perspective tilt on hover and scroll parallax on 3 services',
       'Roadmap 3D active node lift and path draw',
       'Drilling video player with rounded 3D modal',
       'Floating manager chat 8s depth shadow pulse',
     ],
-    kbEstimateGzip: 24.5, // Level A+B: ~4.5KB, Level C (when loaded): ~140KB isolated chunk
-    description: 'Comprehensive 3D hero, scroll-linked depth, service card perspective tilt, and roadmap lift.',
+    kbEstimateGzip: 6.2,
+    description: 'Clean crew photo hero, 3D FAQ card-stack carousel, service card perspective tilt, and roadmap node lift.',
   },
   '/services': {
     path: '/services',

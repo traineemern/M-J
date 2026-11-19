@@ -1,18 +1,12 @@
 import { SEO } from '@/lib/seo'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
-import { Accordion } from '@/components/ui/Accordion'
+import { FaqCarousel } from '@/features/faq-carousel/FaqCarousel'
 import { Phone } from 'lucide-react'
 import { FadeUp } from '@/components/motion/FadeUp'
 import { faqPageData } from '@/data/faq'
 
 export function FaqPage() {
-  const accordionItems = faqPageData.faqs.map((faq) => ({
-    id: faq.id,
-    title: faq.question,
-    content: faq.answer,
-  }))
-
   return (
     <>
       <SEO
@@ -32,13 +26,13 @@ export function FaqPage() {
         </Container>
       </section>
 
-      {/* Questions Only Section with Native <details> Accordion */}
-      <section className="py-14 sm:py-20 bg-white">
-        <Container size="md">
-          <Accordion items={accordionItems} />
+      {/* 3D Card-Stack Carousel Section */}
+      <section className="py-14 sm:py-20 bg-water-50/50 overflow-hidden">
+        <Container>
+          <FaqCarousel items={faqPageData.faqs} />
 
           {/* Bottom Action: Still have a question? Call us */}
-          <div className="mt-12 text-center pt-8 border-t border-water-100">
+          <div className="mt-14 text-center pt-8 border-t border-water-200/80 max-w-md mx-auto">
             <p className="text-base text-water-800 font-condensed uppercase tracking-wider font-bold mb-3">
               {faqPageData.bottomCta.text}
             </p>
@@ -46,7 +40,7 @@ export function FaqPage() {
               href={faqPageData.bottomCta.href}
               variant="primary"
               size="lg"
-              className="font-condensed uppercase tracking-wider"
+              className="font-condensed uppercase tracking-wider shadow-md hover:shadow-lg"
             >
               <Phone className="w-4 h-4 fill-current" />
               <span>{faqPageData.bottomCta.phone}</span>

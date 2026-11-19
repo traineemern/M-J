@@ -69,10 +69,10 @@ describe('Motion, 3D Levels, and Accessibility Tests', () => {
       expect(html).toContain('Years Local Experience')
     })
 
-    it('FaqPage renders questions and native details accordions without JS', () => {
+    it('FaqPage renders questions and 3D carousel items without JS', () => {
       const html = renderStaticPage(FaqPage)
-      expect(html).toContain('<details')
       expect(html).toContain('Frequently Asked Questions')
+      expect(html).toContain('How deep are wells drilled in West Michigan?')
     })
 
     it('ContactPage renders contact details and form without JS', () => {

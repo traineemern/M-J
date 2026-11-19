@@ -9,7 +9,11 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
-    "test": "vitest run"
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:slow": "vitest run --testPathPattern=slow",
+    "media": "node scripts/extract_poster.cjs",
+    "lighthouse": "node scripts/measure_performance.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "3.10.0",
