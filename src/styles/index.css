@@ -900,3 +900,15 @@ html, body {
   .glass-card, .glass-button, .glass-bar a { transition: opacity .01ms !important; }
   .glass-button:hover, .glass-button:active { transform: none !important; }
 }
+
+.contact-redesign .contact-eyebrow { display:flex; align-items:center; gap:.65rem; color:#A22410; font-size:.72rem; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
+.contact-redesign .contact-eyebrow::before { content:""; width:24px; height:2px; background:#C32B13; }
+.contact-ticker { overflow:hidden; background:#C32B13; color:white; height:48px; display:flex; align-items:center; font-size:.75rem; font-weight:900; letter-spacing:.12em; white-space:nowrap; }
+.contact-ticker > div { min-width:max-content; animation: contact-marquee 36s linear infinite; }
+.contact-ticker:hover > div { animation-play-state:paused; }
+@keyframes contact-marquee { to { transform:translateX(-50%); } }
+.contact-quick-card { display:grid; gap:.5rem; align-content:start; border:1px solid #FDDDD8; border-radius:16px; background:white; transition:transform .2s ease,box-shadow .2s ease; }
+.contact-quick-card:hover { transform:translateY(-4px); box-shadow:0 12px 24px rgba(79,17,8,.1); }
+.contact-mobile-bar { display:none; }
+@media (max-width:767px) { .contact-mobile-bar { position:fixed; z-index:39; inset:auto 0 0; display:flex; gap:.6rem; padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom)); background:rgba(46,10,5,.96); border-top:1px solid rgba(255,255,255,.2); } .contact-redesign { padding-bottom:5rem; } }
+@media (prefers-reduced-motion:reduce) { .contact-ticker > div { animation:none; } .contact-quick-card { transition:none; } .contact-quick-card:hover { transform:none; } }
