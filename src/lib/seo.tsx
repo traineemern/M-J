@@ -6,7 +6,7 @@ export function SEO({
   title,
   description,
   canonicalUrl,
-  ogImage = '/images/og-preview.webp',
+  ogImage = '/images/homepage-hero-1920.webp',
   ogType = 'website',
   jsonLd,
 }: MetaProps) {

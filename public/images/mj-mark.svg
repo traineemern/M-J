@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 180" role="img" aria-labelledby="title">
+  <title id="title">M&amp;J Water Wells monogram</title>
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#79fff1"/>
+      <stop offset=".48" stop-color="#08c9c5"/>
+      <stop offset="1" stop-color="#075469"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#b4fff9"/>
+      <stop offset=".55" stop-color="#30f4e5"/>
+      <stop offset="1" stop-color="#087b91"/>
+    </linearGradient>
+    <filter id="halo" x="-40%" y="-45%" width="180%" height="190%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="2.5" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66 64 C111 11 257 7 312 66" stroke="#12d9db" stroke-width="12" opacity=".48" filter="url(#halo)"/>
+    <path d="M66 64 C111 11 257 7 312 66" stroke="url(#edge)" stroke-width="7" opacity=".9"/>
+    <path d="M34 145 V65 Q34 45 54 45 H82 Q94 45 105 55 L172 113 Q181 121 190 113 L257 55 Q267 45 280 45 H294 V105 C294 138 314 155 342 155 C366 155 378 137 378 111 V74" stroke="#02dfe0" stroke-width="28" opacity=".4" filter="url(#halo)"/>
+    <path d="M34 145 V65 Q34 45 54 45 H82 Q94 45 105 55 L172 113 Q181 121 190 113 L257 55 Q267 45 280 45 H294 V105 C294 138 314 155 342 155 C366 155 378 137 378 111 V74" stroke="url(#steel)" stroke-width="24"/>
+    <path d="M34 145 V65 Q34 45 54 45 H82 Q94 45 105 55 L172 113 Q181 121 190 113 L257 55 Q267 45 280 45 H294 V105 C294 138 314 155 342 155 C366 155 378 137 378 111 V74" stroke="url(#edge)" stroke-width="3.5" filter="url(#softGlow)"/>
+    <path d="M76 109 C113 160 172 161 221 129 C266 99 302 75 346 87 C319 57 279 48 238 63 C196 78 167 116 126 117 C105 118 89 115 76 109Z" fill="url(#steel)" stroke="#27f6e9" stroke-width="3.5" filter="url(#softGlow)"/>
+    <path d="M79 109 C121 139 164 139 208 119 C252 97 290 68 336 78" stroke="#a8fff7" stroke-width="2.5" opacity=".95" filter="url(#softGlow)"/>
+  </g>
+</svg>

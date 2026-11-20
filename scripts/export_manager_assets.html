@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><title>Manager GLB exporter</title></head>
+  <body>
+    <script type="module">
+      import * as THREE from 'three'
+      import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
+      import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
+
+      const color = (hex) => new THREE.Color(hex)
+      const boneDefinitions = [
+        ['Hips', null, [0, 0.92, 0]],
+        ['Spine', 'Hips', [0, 0.16, 0]],
+        ['Chest', 'Spine', [0, 0.22, 0]],
+        ['Neck', 'Chest', [0, 0.31, 0]],
+        ['Head', 'Neck', [0, 0.18, 0]],
+        ['LeftUpperLeg', 'Hips', [-0.14, -0.08, 0]],
+        ['LeftLowerLeg', 'LeftUpperLeg', [0, -0.38, 0]],
+        ['LeftFoot', 'LeftLowerLeg', [0, -0.38, 0.03]],
+        ['RightUpperLeg', 'Hips', [0.14, -0.08, 0]],
+        ['RightLowerLeg', 'RightUpperLeg', [0, -0.38, 0]],
+        ['RightFoot', 'RightLowerLeg', [0, -0.38, 0.03]],
+        ['LeftUpperArm', 'Chest', [-0.27, 0.06, 0]],
+        ['LeftForearm', 'LeftUpperArm', [0, -0.28, 0]],
+        ['LeftHand', 'LeftForearm', [0, -0.26, 0]],
+        ['RightUpperArm', 'Chest', [0.27, 0.06, 0]],
+        ['RightForearm', 'RightUpperArm', [0, -0.28, 0]],
+        ['RightHand', 'RightForearm', [0, -0.26, 0]],
+      ]
+      const boneIndex = new Map(boneDefinitions.map(([name], index) => [name, index]))
+
+      function buildRig() {
+        const byName = new Map()
+        const root = new THREE.Group()
+        root.name = 'ManagerCharacter'
+        for (const [name, parentName, position] of boneDefinitions) {
+          const bone = new THREE.Bone()
+          bone.name = name
+          bone.position.set(...position)
+          byName.set(name, bone)
+          if (parentName) byName.get(parentName).add(bone)
+          else root.add(bone)
+        }
+        root.updateMatrixWorld(true)
+        return { root, bones: boneDefinitions.map(([name]) => byName.get(name)), byName }
+      }
+
+      function makeCharacter() {
+        const rig = buildRig()
+        const parts = []
+        const add = (geometry, position, scale, hex, joint) => {
+          geometry.scale(...scale)
+          geometry.translate(...position)
+          geometry.computeVertexNormals()
+          const count = geometry.getAttribute('position').count
+          const c = color(hex)
+          const colors = new Float32Array(count * 3)
+          const joints = new Uint16Array(count * 4)
+          const weights = new Float32Array(count * 4)
+          for (let i = 0; i < count; i += 1) {
+            colors.set([c.r, c.g, c.b], i * 3)
+            joints[i * 4] = boneIndex.get(joint)
+            weights[i * 4] = 1
+          }
+          geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+          geometry.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(joints, 4))
+          geometry.setAttribute('skinWeight', new THREE.Float32BufferAttribute(weights, 4))
+          parts.push(geometry)
+        }
+        const ellipsoid = (position, scale, hex, joint, detail = 12) => add(new THREE.SphereGeometry(1, detail, 10), position, scale, hex, joint)
+        const box = (position, scale, hex, joint) => add(new THREE.BoxGeometry(1, 1, 1), position, scale, hex, joint)
+        const cylinder = (position, scale, hex, joint) => add(new THREE.CylinderGeometry(1, 1, 1, 16), position, scale, hex, joint)
+
+        // One lightweight skinned mesh: work shirt, reflective bands, trousers, boots and helmet.
+        ellipsoid([0, 1.30, 0], [0.255, 0.37, 0.17], '#0284c7', 'Chest')
+        ellipsoid([0, 1.00, 0], [0.19, 0.16, 0.14], '#1e3a8a', 'Hips')
+        box([0, 1.36, 0.168], [0.42, 0.055, 0.018], '#e2e8f0', 'Chest')
+        box([-0.095, 1.48, 0.17], [0.045, 0.34, 0.018], '#facc15', 'Chest')
+        box([0.095, 1.48, 0.17], [0.045, 0.34, 0.018], '#facc15', 'Chest')
+        ellipsoid([0, 1.74, 0], [0.16, 0.19, 0.15], '#d99b72', 'Head')
+        ellipsoid([0, 1.64, 0], [0.07, 0.12, 0.07], '#d99b72', 'Neck')
+        cylinder([0, 1.91, 0], [0.19, 0.10, 0.19], '#facc15', 'Head')
+        cylinder([0, 1.965, 0], [0.145, 0.09, 0.145], '#eab308', 'Head')
+        box([0, 1.90, 0.16], [0.42, 0.035, 0.12], '#facc15', 'Head')
+
+        for (const side of ['Left', 'Right']) {
+          const x = side === 'Left' ? -0.14 : 0.14
+          ellipsoid([x, 0.69, 0], [0.13, 0.25, 0.13], '#1e3a8a', `${side}UpperLeg`)
+          ellipsoid([x, 0.30, 0], [0.105, 0.22, 0.105], '#1e3a8a', `${side}LowerLeg`)
+          box([x, 0.095, 0.055], [0.15, 0.12, 0.25], '#334155', `${side}Foot`)
+          ellipsoid([side === 'Left' ? -0.39 : 0.39, 1.14, 0], [0.105, 0.19, 0.105], '#0284c7', `${side}UpperArm`)
+          ellipsoid([side === 'Left' ? -0.39 : 0.39, 0.86, 0], [0.085, 0.17, 0.085], '#d99b72', `${side}Forearm`)
+          ellipsoid([side === 'Left' ? -0.39 : 0.39, 0.69, 0], [0.07, 0.08, 0.07], '#d99b72', `${side}Hand`)
+        }
+        // Clipboard attached to the left hand, not a separate scene object.
+        box([-0.48, 0.81, 0.13], [0.22, 0.31, 0.035], '#075985', 'LeftHand')
+        box([-0.48, 0.81, 0.153], [0.17, 0.24, 0.012], '#f8fafc', 'LeftHand')
+        box([-0.48, 0.94, 0.164], [0.065, 0.027, 0.012], '#94a3b8', 'LeftHand')
+
+        const merged = mergeGeometries(parts, false)
+        const material = new THREE.MeshStandardMaterial({ color: '#ffffff', vertexColors: true, roughness: 0.68 })
+        const skinned = new THREE.SkinnedMesh(merged, material)
+        skinned.name = 'ManagerSkinnedMesh'
+        skinned.castShadow = true
+        skinned.frustumCulled = true
+        rig.root.add(skinned)
+        rig.root.updateMatrixWorld(true)
+        const skeleton = new THREE.Skeleton(rig.bones)
+        skinned.bind(skeleton)
+        const scene = new THREE.Scene()
+        scene.name = 'ManagerCharacterScene'
+        scene.add(rig.root)
+        scene.updateMatrixWorld(true)
+        return { ...rig, scene }
+      }
+
+      const quaternion = (x = 0, y = 0, z = 0) => new THREE.Quaternion().setFromEuler(new THREE.Euler(x, y, z))
+      const qValues = (angles) => angles.flatMap(([x, y, z]) => quaternion(x, y, z).toArray())
+      function clip(name, duration, entries) {
+        const rig = buildRig()
+        const tracks = entries.map(({ bone, times, angles }) => new THREE.QuaternionKeyframeTrack(`${bone}.quaternion`, times, qValues(angles)))
+        return { scene: rig.root, animation: new THREE.AnimationClip(name, duration, tracks) }
+      }
+
+      const walkTimes = [0, 0.25, 0.5, 0.75, 1]
+      const walk = clip('walk', 1, [
+        { bone: 'LeftUpperLeg', times: walkTimes, angles: [[0.45,0,0],[0,0,0],[-0.45,0,0],[0,0,0],[0.45,0,0]] },
+        { bone: 'RightUpperLeg', times: walkTimes, angles: [[-0.45,0,0],[0,0,0],[0.45,0,0],[0,0,0],[-0.45,0,0]] },
+        { bone: 'LeftLowerLeg', times: walkTimes, angles: [[0,0,0],[0.3,0,0],[0,0,0],[0.3,0,0],[0,0,0]] },
+        { bone: 'RightLowerLeg', times: walkTimes, angles: [[0.3,0,0],[0,0,0],[0.3,0,0],[0,0,0],[0.3,0,0]] },
+        { bone: 'LeftUpperArm', times: walkTimes, angles: [[-0.2,0,0],[0,0,0],[0.2,0,0],[0,0,0],[-0.2,0,0]] },
+        { bone: 'RightUpperArm', times: walkTimes, angles: [[0.2,0,0],[0,0,0],[-0.2,0,0],[0,0,0],[0.2,0,0]] },
+      ])
+      const kneel = clip('kneel', 1.2, [
+        { bone: 'LeftUpperLeg', times: [0,0.65,1.2], angles: [[0,0,0],[0.85,0,0],[0.85,0,0]] },
+        { bone: 'LeftLowerLeg', times: [0,0.65,1.2], angles: [[0,0,0],[1.25,0,0],[1.25,0,0]] },
+        { bone: 'RightUpperLeg', times: [0,0.65,1.2], angles: [[0,0,0],[-0.25,0,0],[-0.25,0,0]] },
+        { bone: 'RightLowerLeg', times: [0,0.65,1.2], angles: [[0,0,0],[0.8,0,0],[0.8,0,0]] },
+        { bone: 'Chest', times: [0,0.65,1.2], angles: [[0,0,0],[0.2,0,0.04],[0.2,0,0.04]] },
+        { bone: 'RightUpperArm', times: [0,0.65,1.2], angles: [[0,0,0],[0.9,0,-0.2],[0.9,0,-0.2]] },
+      ])
+      const standUp = clip('standUp', 0.9, [
+        { bone: 'LeftUpperLeg', times: [0,0.9], angles: [[0.85,0,0],[0,0,0]] },
+        { bone: 'LeftLowerLeg', times: [0,0.9], angles: [[1.25,0,0],[0,0,0]] },
+        { bone: 'RightUpperLeg', times: [0,0.9], angles: [[-0.25,0,0],[0,0,0]] },
+        { bone: 'RightLowerLeg', times: [0,0.9], angles: [[0.8,0,0],[0,0,0]] },
+        { bone: 'Chest', times: [0,0.9], angles: [[0.2,0,0.04],[0,0,0]] },
+        { bone: 'RightUpperArm', times: [0,0.9], angles: [[0.9,0,-0.2],[0,0,0]] },
+      ])
+      const idle = clip('idle', 3, [
+        { bone: 'Chest', times: [0,1.5,3], angles: [[0,0,0],[0.025,0,0],[0,0,0]] },
+        { bone: 'Head', times: [0,1.5,3], angles: [[0,0,0],[0,0.025,0],[0,0,0]] },
+      ])
+      const look = clip('look', 1.6, [
+        { bone: 'Neck', times: [0,0.8,1.6], angles: [[0,0,0],[0,0.3,0],[0,0.3,0]] },
+        { bone: 'Head', times: [0,0.8,1.6], angles: [[0,0,0],[0,-0.12,0],[0,-0.12,0]] },
+      ])
+      const clipboard = clip('clipboard', 2.5, [
+        { bone: 'LeftUpperArm', times: [0,1.25,2.5], angles: [[0,0,0],[0.04,0,-0.04],[0,0,0]] },
+        { bone: 'LeftForearm', times: [0,1.25,2.5], angles: [[0,0,0],[0.05,0,0],[0,0,0]] },
+        { bone: 'Head', times: [0,1.25,2.5], angles: [[0,0,0],[0.08,0,0],[0,0,0]] },
+      ])
+
+      const exporter = new GLTFExporter()
+      const exportGlb = (scene, animations = []) => new Promise((resolve, reject) => exporter.parse(scene, resolve, reject, { binary: true, animations }))
+      const toBase64 = (buffer) => {
+        const bytes = new Uint8Array(buffer)
+        let result = ''
+        for (let i = 0; i < bytes.length; i += 0x8000) result += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+        return btoa(result)
+      }
+      window.generateManagerAssets = async () => {
+        const character = makeCharacter()
+        const files = { 'manager-character.glb': await exportGlb(character.scene) }
+        const clips = [idle, walk, kneel, standUp, look, clipboard]
+        for (const { scene, animation } of clips) {
+          const clipScene = new THREE.Scene()
+          clipScene.add(scene)
+          files[`manager-${animation.name === 'standUp' ? 'stand-up' : animation.name}.glb`] = await exportGlb(clipScene, [animation])
+        }
+        return Object.fromEntries(Object.entries(files).map(([name, buffer]) => [name, toBase64(buffer)]))
+      }
+      document.body.textContent = 'ready'
+    </script>
+  </body>
+</html>

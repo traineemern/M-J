@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { AlertCircle, Phone, ArrowRight, Loader2 } from 'lucide-react'
 import { SuccessCheck } from './SuccessCheck'
 import { siteData } from '@/data/site'
+import { Button } from '@/components/ui/Button'
 
 const enquirySchema = z.object({
   name: z
@@ -32,16 +33,22 @@ const enquirySchema = z.object({
   honeypot: z.string().max(0, { message: 'Bot detected' }).optional(),
 })
 
+function FieldError({ children }: { children: string }) {
+  return <p role="alert" className="field-error"><AlertCircle aria-hidden="true" size={16} />{children}</p>
+}
+
 export type EnquiryFormValues = z.infer<typeof enquirySchema>
 
 interface EnquiryFormProps {
   initialService?: string
+  initialTown?: string
   onSuccess?: () => void
   onClose?: () => void
 }
 
 export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   initialService,
+  initialTown,
   onClose,
 }) => {
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
@@ -61,7 +68,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     name: '',
     phone: '',
     email: '',
-    cityTownship: '',
+    cityTownship: initialTown || '',
     serviceNeeded: initialService || 'new well',
     message: '',
     consent: false,
@@ -202,11 +209,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           value={values.name}
           onChange={handleChange}
           placeholder="e.g. John Miller"
-          className={`w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+          aria-invalid={Boolean(errors.name)}
+          className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
             errors.name ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
           } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
         />
-        {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
+        {errors.name && <FieldError>{errors.name}</FieldError>}
       </div>
 
       {/* Phone & Email in 2 columns */}
@@ -225,11 +233,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             value={values.phone}
             onChange={handleChange}
             placeholder="(616) 000-0000"
-            className={`w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+            aria-invalid={Boolean(errors.phone)}
+            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
               errors.phone ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
             } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
           />
-          {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
+          {errors.phone && <FieldError>{errors.phone}</FieldError>}
         </div>
 
         <div>
@@ -246,11 +255,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             value={values.email}
             onChange={handleChange}
             placeholder="you@example.com"
-            className={`w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+            aria-invalid={Boolean(errors.email)}
+            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
               errors.email ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
             } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
           />
-          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+          {errors.email && <FieldError>{errors.email}</FieldError>}
         </div>
       </div>
 
@@ -270,13 +280,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             value={values.cityTownship}
             onChange={handleChange}
             placeholder="e.g. Casnovia, Newaygo"
-            className={`w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+            aria-invalid={Boolean(errors.cityTownship)}
+            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
               errors.cityTownship ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
             } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
           />
-          {errors.cityTownship && (
-            <p className="mt-1 text-xs text-red-600">{errors.cityTownship}</p>
-          )}
+          {errors.cityTownship && <FieldError>{errors.cityTownship}</FieldError>}
         </div>
 
         <div>
@@ -291,7 +300,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             name="serviceNeeded"
             value={values.serviceNeeded}
             onChange={handleChange}
-            className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors"
+            className="form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors"
           >
             <option value="new well">New Well Drilling</option>
             <option value="repair">Well Repair</option>
@@ -299,9 +308,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             <option value="irrigation">Agricultural & Irrigation</option>
             <option value="other">Other Service</option>
           </select>
-          {errors.serviceNeeded && (
-            <p className="mt-1 text-xs text-red-600">{errors.serviceNeeded}</p>
-          )}
+          {errors.serviceNeeded && <FieldError>{errors.serviceNeeded}</FieldError>}
         </div>
       </div>
 
@@ -320,7 +327,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           value={values.message}
           onChange={handleChange}
           placeholder="Tell us about your well or water issue..."
-          className="w-full px-3.5 py-2 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors resize-none"
+          className="form-control-glow w-full px-3.5 py-2 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors resize-none"
         />
       </div>
 
@@ -332,13 +339,13 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           name="consent"
           checked={values.consent}
           onChange={handleChange}
-          className="mt-1 h-4 w-4 rounded border-water-300 text-water-600 focus:ring-water-500 cursor-pointer"
+          className="mt-1 size-5 rounded border-2 border-white text-aqua accent-aqua focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
         />
-        <label htmlFor="enquiry-consent" className="text-xs text-water-800 leading-snug cursor-pointer">
+        <label htmlFor="enquiry-consent" className="glass-consent-text leading-snug cursor-pointer">
           I agree to allow M&J Water Wells to contact me regarding my well estimate.
         </label>
       </div>
-      {errors.consent && <p className="text-xs text-red-600">{errors.consent}</p>}
+      {errors.consent && <FieldError>{errors.consent}</FieldError>}
 
       {/* Error state alert */}
       {formState === 'error' && (
@@ -350,10 +357,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
 
       {/* Submit Button */}
       <div className="pt-2">
-        <button
+        <Button
           type="submit"
+          variant="primary"
+          size="lg"
           disabled={formState === 'sending'}
-          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-water-600 hover:bg-water-700 text-white font-condensed font-bold uppercase tracking-wider text-sm transition-colors disabled:opacity-60 cursor-pointer shadow-md"
+          className="w-full rounded-lg font-condensed uppercase tracking-wider text-sm"
         >
           {formState === 'sending' ? (
             <>
@@ -366,7 +375,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               <ArrowRight className="w-4 h-4" />
             </>
           )}
-        </button>
+        </Button>
       </div>
     </form>
   )

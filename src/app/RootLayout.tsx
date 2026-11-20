@@ -36,11 +36,11 @@ export function RootLayout() {
   return (
     <EnquiryProvider>
       <DrillingVideoProvider>
-        <div className="flex flex-col min-h-screen">
+        <div className="theme-charcoal flex flex-col min-h-screen">
           {/* Top Scroll Progress Line (All Pages) */}
           <ScrollProgressBar />
           <Header />
-          <main className="flex-1">
+          <main className={`flex-1 ${location.pathname !== '/' ? 'pt-[72px]' : ''}`}>
             <PageTransition key={location.pathname}>
               <Outlet />
             </PageTransition>

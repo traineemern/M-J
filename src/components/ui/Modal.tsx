@@ -112,7 +112,7 @@ export const Modal: React.FC<ModalProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 bg-water-950/60 backdrop-blur-xs cursor-pointer"
+            className="fixed inset-0 bg-water-950/75 cursor-pointer"
             aria-hidden="true"
           />
 
@@ -120,12 +120,13 @@ export const Modal: React.FC<ModalProps> = ({
           <motion.div
             ref={modalRef}
             role="dialog"
+            data-state="open"
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
             initial={{
               opacity: 0,
-              scale: shouldReduceMotion ? 1 : 0.96,
+              scale: shouldReduceMotion ? 1 : 0.97,
             }}
             animate={{
               opacity: 1,
@@ -133,13 +134,15 @@ export const Modal: React.FC<ModalProps> = ({
             }}
             exit={{
               opacity: 0,
-              scale: shouldReduceMotion ? 1 : 0.96,
+              scale: shouldReduceMotion ? 1 : 0.97,
             }}
             transition={{
-              duration: 0.2,
+              duration: shouldReduceMotion ? 0.01 : 0.22,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className={`relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-[520px] bg-white sm:rounded-3xl shadow-2xl border border-water-200/80 flex flex-col z-10 overflow-hidden outline-none ${className}`}
+            data-glass-blur="true"
+            data-glass-visible={isOpen}
+            className={`glass-popup glass-shimmer modal-glow relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-[520px] sm:rounded-3xl shadow-2xl border border-water-200/80 flex flex-col z-10 overflow-hidden outline-none ${className}`}
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-water-100 bg-water-50/70">

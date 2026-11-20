@@ -22,6 +22,7 @@ export const contactFormSchema = z.object({
   serviceNeeded: z
     .string()
     .min(1, { message: 'Please select the service needed' }),
+  preferredTime: z.enum(['morning', 'afternoon', 'evening']).optional(),
   message: z
     .string()
     .min(10, { message: 'Please provide a brief description of your project or problem (at least 10 characters)' })

@@ -66,6 +66,43 @@ if (typeof Element !== 'undefined' && !Element.prototype.animate) {
     }) as unknown as Animation
 }
 
+// Patch JSDOM removeChild bug for React 19 Suspense placeholder nodes
+const origRemoveChild = Node.prototype.removeChild
+Node.prototype.removeChild = function <T extends Node>(child: T): T {
+  if (child.parentNode !== this) {
+    if (child.parentNode) {
+      return child.parentNode.removeChild(child)
+    }
+    return child
+  }
+  return origRemoveChild.call(this, child) as T
+}
+
+// Mock WebGLRenderingContext for JSDOM
+if (typeof window !== 'undefined') {
+  if (!window.WebGLRenderingContext) {
+    window.WebGLRenderingContext = class WebGLRenderingContext {} as unknown as typeof WebGLRenderingContext
+  }
+  const origGetContext = HTMLCanvasElement.prototype.getContext
+  HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, contextId: string, ...args: any[]) {
+    if (contextId === 'webgl' || contextId === 'experimental-webgl') {
+      return {
+        getExtension: () => null,
+        getParameter: () => 0,
+        createTexture: () => ({}),
+        bindTexture: () => {},
+        texParameteri: () => {},
+        viewport: () => {},
+        clearColor: () => {},
+        clear: () => {},
+        enable: () => {},
+        disable: () => {},
+      }
+    }
+    return origGetContext ? (origGetContext as any).apply(this, [contextId, ...args]) : null
+  } as any
+}
+
 // Mock window.matchMedia
 if (typeof window !== 'undefined' && !window.matchMedia) {
   window.matchMedia = (query: string) => ({

@@ -13,7 +13,7 @@ export function Card({
   ...props
 }: CardProps) {
   const variants = {
-    default: 'bg-white border border-water-200/80 shadow-xs',
+    default: 'bg-white border border-water-100 shadow-sm',
     muted: 'bg-surface-muted border border-water-200/60',
     interactive:
       'bg-white border border-water-200 shadow-xs hover:shadow-lg hover:border-water-400/80 hover:-translate-y-1.5 transition-all duration-250 cursor-pointer',
@@ -23,7 +23,7 @@ export function Card({
 
   return (
     <div
-      className={cn('rounded-2xl p-6 sm:p-8 card-hover-lift', variants[variant], className)}
+      className={cn('glass-card rounded-2xl p-6 sm:p-8 card-hover-lift', variants[variant], className)}
       {...props}
     >
       {children}

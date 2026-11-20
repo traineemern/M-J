@@ -1,4 +1,3 @@
-import { useRef, useState } from 'react'
 import { SEO, generateLocalBusinessSchema } from '@/lib/seo'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
@@ -12,18 +11,17 @@ import {
   Activity,
   Droplet,
   ArrowRight,
-  Phone,
 } from 'lucide-react'
 import { FadeUp } from '@/components/motion/FadeUp'
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger'
-import { ScrollTilt } from '@/components/motion/ScrollTilt'
 import { TiltCard } from '@/components/motion/TiltCard'
 import { Accordion } from '@/components/ui/Accordion'
 import { RoadmapFlow } from '@/features/roadmap/RoadmapFlow'
-import { useRoadmapScrollTrigger } from '@/components/motion/ScrollProgressPath'
 import { DrillingVideo } from '@/features/drilling-video/DrillingVideo'
 import { servicesPageData } from '@/data/services'
 import { siteData } from '@/data/site'
+import { BannerHero } from '@/components/ui/BannerHero'
+import { TrustBar } from '@/features/trust/TrustBar'
 
 const iconMap = {
   Home,
@@ -36,16 +34,6 @@ const iconMap = {
 }
 
 export function ServicesPage() {
-  const roadmapContainerRef = useRef<HTMLDivElement>(null)
-  const [, setActiveScrollStep] = useState<number>(1)
-
-  // GSAP ScrollTrigger roadmap road drawing (scrub: true)
-  useRoadmapScrollTrigger({
-    containerRef: roadmapContainerRef,
-    pathSelector: 'path',
-    onStepProgress: setActiveScrollStep,
-  })
-
   return (
     <>
       <SEO
@@ -55,47 +43,15 @@ export function ServicesPage() {
         jsonLd={generateLocalBusinessSchema({ pagePath: '/services', pageName: 'Services' })}
       />
 
-      {/* Page Hero with Level B ScrollTilt */}
-      <section className="bg-gradient-to-b from-water-700 to-water-900 text-white py-14 sm:py-18 overflow-hidden">
-        <Container>
-          <ScrollTilt maxRotation={6}>
-            <FadeUp className="max-w-2xl">
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-condensed uppercase leading-tight">
-                {servicesPageData.heading}
-              </h1>
-              <p className="mt-3 text-base sm:text-lg text-water-100 font-sans leading-relaxed">
-                {servicesPageData.intro}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button
-                  href="/#contact-estimate"
-                  variant="white"
-                  size="md"
-                  className="font-condensed uppercase tracking-wider"
-                >
-                  <span>Free Estimate</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  href={`tel:${siteData.phoneClean}`}
-                  variant="secondary"
-                  size="md"
-                  className="text-white border-white hover:bg-white/10 font-condensed uppercase tracking-wider"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>{siteData.phone}</span>
-                </Button>
-              </div>
-            </FadeUp>
-          </ScrollTilt>
-        </Container>
-      </section>
+      <BannerHero title="Our services" description={servicesPageData.intro} image="/images/service-residential.webp" action={{ label: 'Free estimate', href: '/contact' }} />
+      <TrustBar />
+      <section className="bg-water-900 py-3 text-center text-xs font-bold uppercase tracking-widest text-water-100">{siteData.primaryArea}</section>
 
       {/* 7 Services Grid with Level B TiltCard */}
       <section className="py-14 sm:py-20 bg-white">
         <Container>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {servicesPageData.services.map((service) => {
+            {servicesPageData.services.slice(0, 6).map((service) => {
               const Icon = iconMap[service.icon as keyof typeof iconMap] || Droplet
 
               return (
@@ -114,6 +70,7 @@ export function ServicesPage() {
                       <p className="text-sm text-water-800 leading-relaxed font-sans">
                         {service.line}
                       </p>
+                      <a href="#drilling-video" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-water-700 underline underline-offset-4 focus-visible:outline-2">Learn more <ArrowRight className="size-4" /></a>
                     </Card>
                   </TiltCard>
                 </StaggerItem>
@@ -133,7 +90,7 @@ export function ServicesPage() {
         <Container>
           <FadeUp className="text-center max-w-xl mx-auto mb-10">
             <h2 className="text-2xl sm:text-4xl font-black text-water-900 font-condensed uppercase tracking-tight">
-              Rotary Drilling Process
+              How we drill
             </h2>
           </FadeUp>
           <DrillingVideo id="drilling-video-services" />
@@ -141,17 +98,14 @@ export function ServicesPage() {
       </section>
 
       {/* Full Roadmap Section with GSAP Scrubbed Road Drawing */}
-      <section className="py-16 sm:py-24 bg-white border-b border-water-200">
+      <section className="roadmap-section py-16 sm:py-24 border-b border-water-800">
         <Container>
-          <FadeUp className="text-center max-w-xl mx-auto mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-water-900 font-condensed uppercase tracking-tight">
+          <FadeUp className="text-center max-w-xl mx-auto mb-8">
+            <h2 className="text-3xl sm:text-4xl font-black text-white font-condensed uppercase tracking-tight">
               8-Step Project Roadmap
             </h2>
           </FadeUp>
-
-          <div ref={roadmapContainerRef}>
-            <RoadmapFlow />
-          </div>
+          <RoadmapFlow />
 
           <div className="mt-12 text-center">
             <Button
@@ -166,6 +120,10 @@ export function ServicesPage() {
           </div>
         </Container>
       </section>
+      <div className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-water-200 bg-white/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg sm:hidden">
+        <Button href={`tel:${siteData.phoneClean}`} variant="outline" className="flex-1">Call</Button>
+        <Button href="/contact" variant="primary" pulse className="flex-1">Free estimate</Button>
+      </div>
     </>
   )
 }

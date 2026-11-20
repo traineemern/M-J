@@ -58,12 +58,20 @@ export const ManagerChat: React.FC = () => {
   // Esc key listener & focus management
   useEffect(() => {
     if (!isOpen) return
+    window.requestAnimationFrame(() => panelRef.current?.querySelector<HTMLElement>('button, a[href], input, select, textarea')?.focus())
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
         setIsOpen(false)
         chatButtonRef.current?.focus()
+      } else if (e.key === 'Tab' && panelRef.current) {
+        const focusables = Array.from(panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled])'))
+        if (!focusables.length) { e.preventDefault(); return }
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
       }
     }
 
@@ -124,11 +132,12 @@ export const ManagerChat: React.FC = () => {
       {/* Floating Trigger Button (Bottom Right) with 8s Gentle Depth Shadow Pulse */}
       <button
         ref={chatButtonRef}
+        data-chat-launcher
         type="button"
         onClick={handleOpen}
         aria-label="Chat with our manager"
         aria-expanded={isOpen}
-        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2.5 p-1.5 sm:px-4 sm:py-2.5 rounded-full bg-water-700 hover:bg-water-800 text-white shadow-xl hover:shadow-2xl border-2 border-water-400/50 transition-transform active:scale-95 cursor-pointer animate-chat-pulse ${
+        className={`glass-blue-surface fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2.5 p-1.5 sm:px-4 sm:py-2.5 rounded-full bg-water-700 hover:bg-water-800 text-white shadow-xl hover:shadow-2xl border-2 border-water-400/50 transition-transform active:scale-95 cursor-pointer animate-chat-pulse ${
           isOpen ? 'hidden' : 'flex'
         }`}
       >
@@ -163,7 +172,7 @@ export const ManagerChat: React.FC = () => {
               initial={{
                 opacity: 0,
                 y: shouldReduceMotion ? 0 : 20,
-                scale: shouldReduceMotion ? 1 : 0.96,
+              scale: shouldReduceMotion ? 1 : 0.97,
               }}
               animate={{
                 opacity: 1,
@@ -173,10 +182,11 @@ export const ManagerChat: React.FC = () => {
               exit={{
                 opacity: 0,
                 y: shouldReduceMotion ? 0 : 20,
-                scale: shouldReduceMotion ? 1 : 0.96,
+              scale: shouldReduceMotion ? 1 : 0.97,
               }}
-              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full sm:w-[380px] h-full sm:h-[540px] max-h-[100dvh] sm:max-h-[580px] bg-white sm:rounded-2xl shadow-2xl border border-water-200 flex flex-col overflow-hidden z-10"
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.22, ease: [0.16, 1, 0.3, 1] }}
+              data-glass-blur="true"
+              className="glass-popup relative w-full sm:w-[380px] h-full sm:h-[540px] max-h-[100dvh] sm:max-h-[580px] sm:rounded-2xl shadow-2xl border border-water-200 flex flex-col overflow-hidden z-10"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 bg-water-800 text-white border-b border-water-900">
@@ -237,7 +247,7 @@ export const ManagerChat: React.FC = () => {
               </div>
 
               {/* Prebuilt Questions Section (No free-text input) */}
-              <div className="p-3 border-t border-water-200 bg-white">
+              <div className="glass-chat-input p-3 border-t border-water-200">
                 <p className="text-[11px] font-bold text-water-600 font-condensed uppercase tracking-wider mb-2">
                   Choose a question:
                 </p>

@@ -34,7 +34,7 @@ export function canLoadLevelC(): boolean {
 }
 
 export const HeroScene: React.FC<HeroSceneProps> = ({
-  posterSrc = '/images/mj-crew-photo.jpg',
+  posterSrc = '/images/about-team.jpg',
   posterAlt = 'M&J Water Wells crew and rotary drilling rig outside Casnovia headquarters',
   className = '',
 }) => {

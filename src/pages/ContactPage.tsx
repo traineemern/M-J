@@ -1,10 +1,7 @@
 import { SEO, generateLocalBusinessSchema } from '@/lib/seo'
 import { Container } from '@/components/ui/Container'
-import { Card } from '@/components/ui/Card'
 import { ContactForm } from '@/features/contact/ContactForm'
-import { Phone, MapPin, Clock } from 'lucide-react'
-import { FadeUp } from '@/components/motion/FadeUp'
-import { TiltCard } from '@/components/motion/TiltCard'
+import { Phone, MapPin, Clock, Droplet } from 'lucide-react'
 import { contactPageData } from '@/data/contact'
 
 export function ContactPage() {
@@ -16,74 +13,25 @@ export function ContactPage() {
         canonicalUrl="/contact"
         jsonLd={generateLocalBusinessSchema({ pagePath: '/contact', pageName: 'Contact' })}
       />
-
-      {/* Page Hero */}
-      <section className="bg-gradient-to-b from-water-700 to-water-900 text-white py-12 sm:py-16">
+      <section className="contact-art-section relative min-h-[calc(100svh-5rem)] overflow-hidden py-14 sm:py-20">
         <Container>
-          <FadeUp className="max-w-xl text-center sm:text-left">
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-condensed uppercase">
-              {contactPageData.heading}
-            </h1>
-            <p className="mt-2 text-base text-water-100 font-sans">
-              {contactPageData.line}
-            </p>
-          </FadeUp>
-        </Container>
-      </section>
-
-      {/* Contact Details & Form */}
-      <section className="py-12 sm:py-18 bg-white">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* Left Column: Direct Info Cards */}
-            <div className="lg:col-span-5 space-y-4">
-              <Card variant="interactive" className="border-t-4 border-t-water-600 p-5 bg-water-50/40">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-water-100 text-water-700 flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-water-900 text-base font-condensed uppercase">Phone</h2>
-                    <a
-                      href={`tel:${contactPageData.phoneClean}`}
-                      className="text-2xl font-black text-water-700 hover:text-water-900 transition-colors font-condensed"
-                    >
-                      {contactPageData.phone}
-                    </a>
-                  </div>
-                </div>
-              </Card>
-
-              <Card variant="default" className="p-5 bg-white border border-water-200">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-water-100 text-water-700 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-water-900 text-base font-condensed uppercase">Address</h2>
-                    <p className="text-sm text-water-800 font-sans mt-0.5">{contactPageData.address}</p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card variant="default" className="p-5 bg-white border border-water-200">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-water-100 text-water-700 flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-water-900 text-base font-condensed uppercase">Hours</h2>
-                    <p className="text-sm text-water-800 font-sans mt-0.5">{contactPageData.hours}</p>
-                  </div>
-                </div>
-              </Card>
+          <div className="grid min-h-[65vh] grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
+            <div className="order-2 lg:order-1">
+              <ContactForm id="contact-form" title="" subtitle="" className="mx-auto max-w-xl" />
             </div>
-
-            {/* Right Column: Contact Form with Level A Perspective Depth Container */}
-            <div className="lg:col-span-7">
-              <TiltCard maxTilt={3} className="h-full">
-                <ContactForm id="contact-form" />
-              </TiltCard>
+            <div className="contact-art-copy order-1 mx-auto max-w-lg lg:order-2">
+              <div className="contact-art-outline">
+                <h1 className="contact-art-title"><span>Contact</span><span className="contact-art-title-last"><i aria-hidden="true" />Us</span></h1>
+              </div>
+              <p className="mt-8 max-w-sm text-sm leading-relaxed text-slate-300 sm:ml-16">
+                It is important for us to keep in touch with you. We are ready to answer questions about your well, pump, or project. Tell us what you need and our family team will follow up.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-300 sm:ml-16">
+                <a className="inline-flex items-center gap-2 hover:text-cyan-200" href={`tel:${contactPageData.phoneClean}`}><Phone className="size-4" />{contactPageData.phone}</a>
+                <span className="inline-flex items-center gap-2"><MapPin className="size-4" />{contactPageData.address}</span>
+                <span className="inline-flex items-center gap-2"><Clock className="size-4" />Family-owned, free estimates</span>
+              </div>
+              <Droplet className="contact-art-drop" aria-hidden="true" />
             </div>
           </div>
         </Container>

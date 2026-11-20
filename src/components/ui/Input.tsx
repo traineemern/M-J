@@ -1,5 +1,8 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useState } from 'react'
+import { motion } from 'motion/react'
+import { AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -7,43 +10,25 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   helperText?: string
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, helperText, id, ...props }, ref) => {
-    const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined)
+function FieldFeedback({ error, helperText, id }: { error?: string; helperText?: string; id: string }) {
+  if (error) return <p id={id} aria-live="polite" className="field-error"><AlertCircle aria-hidden="true" size={16} />{error}</p>
+  if (helperText) return <p id={id} className="field-hint">{helperText}</p>
+  return null
+}
 
-    return (
-      <div className="w-full">
-        {label && (
-          <label
-            htmlFor={inputId}
-            className="block text-sm font-semibold text-slate-800 mb-1.5"
-          >
-            {label}
-            {props.required && <span className="text-water-700 ml-1">*</span>}
-          </label>
-        )}
-        <input
-          id={inputId}
-          ref={ref}
-          className={cn(
-            'flex h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-base text-slate-900 shadow-xs transition-colors',
-            'placeholder:text-slate-400',
-            'focus-visible:border-water-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-500/20',
-            'disabled:cursor-not-allowed disabled:bg-slate-100 disabled:opacity-50',
-            error && 'border-red-600 focus-visible:border-red-600 focus-visible:ring-red-600/20',
-            className,
-          )}
-          {...props}
-        />
-        {error && <p className="mt-1.5 text-sm font-medium text-red-600">{error}</p>}
-        {helperText && !error && (
-          <p className="mt-1.5 text-xs text-slate-500">{helperText}</p>
-        )}
-      </div>
-    )
-  },
-)
-
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ className, label, error, helperText, id, onFocus, onBlur, ...props }, ref) => {
+  const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined)
+  const feedbackId = `${inputId}-feedback`
+  const [focused, setFocused] = useState(false)
+  const reduce = useReducedMotion()
+  return <div className="form-field-glow w-full">
+    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? '#a5f3fc' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-cyan-200">*</span>}</motion.label>}
+    <div className="form-control-shell" data-invalid={Boolean(error)}>
+      <input id={inputId} ref={ref} onFocus={(event) => { setFocused(true); onFocus?.(event) }} onBlur={(event) => { setFocused(false); onBlur?.(event) }} aria-invalid={Boolean(error)} aria-describedby={error || helperText ? feedbackId : props['aria-describedby']} className={cn('glass-field form-control-glow flex h-11 w-full rounded-lg border px-3.5 py-2 text-base shadow-xs focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50', error && 'is-invalid', className)} {...props} />
+    </div>
+    <FieldFeedback id={feedbackId} error={error} helperText={helperText} />
+  </div>
+})
 Input.displayName = 'Input'
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -52,42 +37,17 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   helperText?: string
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, label, error, helperText, id, rows = 4, ...props }, ref) => {
-    const textareaId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined)
-
-    return (
-      <div className="w-full">
-        {label && (
-          <label
-            htmlFor={textareaId}
-            className="block text-sm font-semibold text-slate-800 mb-1.5"
-          >
-            {label}
-            {props.required && <span className="text-water-700 ml-1">*</span>}
-          </label>
-        )}
-        <textarea
-          id={textareaId}
-          ref={ref}
-          rows={rows}
-          className={cn(
-            'flex w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-base text-slate-900 shadow-xs transition-colors',
-            'placeholder:text-slate-400',
-            'focus-visible:border-water-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-500/20',
-            'disabled:cursor-not-allowed disabled:bg-slate-100 disabled:opacity-50',
-            error && 'border-red-600 focus-visible:border-red-600 focus-visible:ring-red-600/20',
-            className,
-          )}
-          {...props}
-        />
-        {error && <p className="mt-1.5 text-sm font-medium text-red-600">{error}</p>}
-        {helperText && !error && (
-          <p className="mt-1.5 text-xs text-slate-500">{helperText}</p>
-        )}
-      </div>
-    )
-  },
-)
-
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, label, error, helperText, id, rows = 4, onFocus, onBlur, ...props }, ref) => {
+  const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined)
+  const feedbackId = `${inputId}-feedback`
+  const [focused, setFocused] = useState(false)
+  const reduce = useReducedMotion()
+  return <div className="form-field-glow w-full">
+    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? '#a5f3fc' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-cyan-200">*</span>}</motion.label>}
+    <div className="form-control-shell" data-invalid={Boolean(error)}>
+      <textarea id={inputId} ref={ref} rows={rows} onFocus={(event) => { setFocused(true); onFocus?.(event) }} onBlur={(event) => { setFocused(false); onBlur?.(event) }} aria-invalid={Boolean(error)} aria-describedby={error || helperText ? feedbackId : props['aria-describedby']} className={cn('glass-field form-control-glow flex w-full rounded-lg border px-3.5 py-2.5 text-base shadow-xs focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50', error && 'is-invalid', className)} {...props} />
+    </div>
+    <FieldFeedback id={feedbackId} error={error} helperText={helperText} />
+  </div>
+})
 Textarea.displayName = 'Textarea'

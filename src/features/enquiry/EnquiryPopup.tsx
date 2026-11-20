@@ -4,7 +4,7 @@ import { EnquiryForm } from './EnquiryForm'
 import { useEnquiry } from './EnquiryContext'
 
 export const EnquiryPopup: React.FC = () => {
-  const { isOpen, closeEnquiry, prefilledService } = useEnquiry()
+  const { isOpen, closeEnquiry, prefilledService, prefilledTown } = useEnquiry()
 
   return (
     <Modal
@@ -18,6 +18,7 @@ export const EnquiryPopup: React.FC = () => {
       </p>
       <EnquiryForm
         initialService={prefilledService}
+        initialTown={prefilledTown}
         onClose={closeEnquiry}
       />
     </Modal>

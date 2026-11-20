@@ -4,8 +4,8 @@
   "description": "West Michigan's Well Drilling Specialists in Casnovia, Sand Lake, Newaygo, Fremont & Hesperia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#C41E0F",
+  "background_color": "#0F1414",
+  "theme_color": "#0F1414",
   "icons": [
     {
       "src": "/favicon.svg",

@@ -3,7 +3,8 @@ import React, { createContext, useContext, useState, useCallback } from 'react'
 interface EnquiryContextType {
   isOpen: boolean
   prefilledService?: string
-  openEnquiry: (service?: string) => void
+  prefilledTown?: string
+  openEnquiry: (service?: string, town?: string) => void
   closeEnquiry: () => void
 }
 
@@ -12,9 +13,11 @@ const EnquiryContext = createContext<EnquiryContextType | undefined>(undefined)
 export const EnquiryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [prefilledService, setPrefilledService] = useState<string | undefined>(undefined)
+  const [prefilledTown, setPrefilledTown] = useState<string | undefined>(undefined)
 
-  const openEnquiry = useCallback((service?: string) => {
+  const openEnquiry = useCallback((service?: string, town?: string) => {
     setPrefilledService(service)
+    setPrefilledTown(town)
     setIsOpen(true)
   }, [])
 
@@ -23,7 +26,7 @@ export const EnquiryProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, [])
 
   return (
-    <EnquiryContext.Provider value={{ isOpen, prefilledService, openEnquiry, closeEnquiry }}>
+    <EnquiryContext.Provider value={{ isOpen, prefilledService, prefilledTown, openEnquiry, closeEnquiry }}>
       {children}
     </EnquiryContext.Provider>
   )

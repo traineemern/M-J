@@ -19,12 +19,6 @@ export function Section({
     dark: 'bg-slate-950 text-white',
   }
 
-  return (
-    <section
-      className={cn('py-16 sm:py-20 lg:py-24', variants[variant], className)}
-      {...props}
-    >
-      {children}
-    </section>
-  )
+  const { id, ...rest } = props
+  return <section id={id} className={cn('py-14 lg:py-24', variants[variant], className)} {...rest}><div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">{children}</div></section>
 }

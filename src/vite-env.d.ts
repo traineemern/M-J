@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_FORM_ENDPOINT: string
   readonly VITE_SITE_URL?: string
+  readonly VITE_SHOW_SAMPLE_DATA?: string
 }
 
 interface ImportMeta {

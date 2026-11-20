@@ -1,53 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
+import type { ReactNode } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 
-interface RevealProps {
-  children: React.ReactNode
-  delay?: number
-  duration?: number
-  className?: string
-  yOffset?: number
-}
-
-export function Reveal({
-  children,
-  delay = 0,
-  duration = 0.5,
-  className = '',
-  yOffset = 24,
-}: RevealProps) {
-  const shouldReduceMotion = useReducedMotion()
-  const [forcedRevealed, setForcedRevealed] = useState(false)
-
-  useEffect(() => {
-    if (shouldReduceMotion) return
-
-    const timer = setTimeout(() => {
-      setForcedRevealed(true)
-    }, 1500)
-
-    return () => clearTimeout(timer)
-  }, [shouldReduceMotion])
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>
-  }
-
-  return (
-    <motion.div
-      initial={forcedRevealed ? false : { opacity: 0, y: yOffset }}
-      animate={forcedRevealed ? { opacity: 1, y: 0 } : undefined}
-      whileInView={forcedRevealed ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.05, margin: '0px 0px -10% 0px' }}
-      transition={{
-        duration,
-        delay,
-        ease: 'easeOut',
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  )
+export function Reveal({ children, heading = false, className = '', delay = 0 }: { children: ReactNode; heading?: boolean; className?: string; delay?: number }) {
+  const reduce = useReducedMotion()
+  if (reduce) return <div className={className}>{children}</div>
+  return <motion.div className={className} initial={heading ? { clipPath: 'inset(0 0 100% 0)' } : { opacity: 0, y: 18 }} whileInView={heading ? { clipPath: 'inset(0 0 0% 0)' } : { opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.55, delay, ease: 'easeOut' }}>{children}</motion.div>
 }

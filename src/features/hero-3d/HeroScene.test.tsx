@@ -59,6 +59,6 @@ describe('HeroScene Level C 3D Component', () => {
       name: /M&J Water Wells crew and rotary drilling rig/i,
     })
     expect(img).toBeInTheDocument()
-    expect(img).toHaveAttribute('src', '/images/mj-crew-photo.jpg')
+    expect(img).toHaveAttribute('src', '/images/about-team.jpg')
   })
 })

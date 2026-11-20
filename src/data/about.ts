@@ -5,19 +5,20 @@ export const aboutPageData = {
   counters: [
     {
       id: 'years',
-      value: '30+',
+      value: '[CONFIRM]',
       label: 'Years Local Experience',
     },
     {
       id: 'wells',
-      value: '1,500+',
+      value: '[CONFIRM]',
       label: 'Wells Drilled in MI',
     },
     {
       id: 'rigs',
-      value: '100%',
-      label: 'Licensed & Insured',
+      value: '[CONFIRM]',
+      label: 'Rigs in Service',
     },
+    { id: 'towns', value: '[CONFIRM]', label: 'Service Towns' },
   ],
 
   highlights: [

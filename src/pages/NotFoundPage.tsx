@@ -23,7 +23,7 @@ export function NotFoundPage() {
               <DepthFloat distance={6} duration={4}>
                 <div className="inline-flex items-center justify-center p-3 sm:p-4 rounded-2xl bg-water-900 border border-water-700 text-white shadow-xl">
                   <img
-                    src="/images/mj-logo-white.png"
+                    src="/images/mj-mark.svg"
                     alt="M&J Water Wells, Casnovia, Michigan"
                     width={220}
                     height={48}

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CheckCircle2, AlertCircle, Loader2, Send, Phone } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
@@ -7,6 +8,8 @@ import { useContactSubmit } from './useContactSubmit'
 import { siteData } from '@/data/site'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
+import { useIsMobile } from '@/hooks/useIsMobile'
+import { Glass } from '@/components/ui/Glass'
 
 interface ContactFormProps {
   id?: string
@@ -22,12 +25,15 @@ export function ContactForm({
   className = '',
 }: ContactFormProps) {
   const { status, errorMessage, submitForm, reset } = useContactSubmit()
+  const isMobile = useIsMobile(640)
+  const [step, setStep] = useState<1 | 2>(1)
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset: resetForm,
+    trigger,
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -36,6 +42,7 @@ export function ContactForm({
       email: '',
       cityTownship: '',
       serviceNeeded: '',
+      preferredTime: undefined,
       message: '',
       consent: false,
       honeypot: '',
@@ -50,24 +57,26 @@ export function ContactForm({
   }
 
   return (
-    <div
+    <Glass
       id={id}
-      className={`bg-white rounded-2xl border border-slate-200 shadow-xl p-6 sm:p-10 ${className}`}
+      variant="panel"
+      shimmer
+      className={`contact-art-panel rounded-2xl border border-white/10 p-6 sm:p-10 ${className}`}
     >
       {/* Header */}
-      <div className="mb-8">
-        <span className="inline-block text-xs font-bold uppercase tracking-wider text-water-700 mb-2 font-condensed">
+      {(title || subtitle) && <div className="mb-8">
+        <span className="inline-block text-xs font-bold uppercase tracking-wider text-cyan-200 mb-2 font-condensed">
           Family-Owned • Free Estimates • Fast Scheduling
         </span>
-        <h2 className="text-2xl sm:text-3xl font-black text-ink-dark tracking-tight font-condensed uppercase">
+        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-condensed uppercase">
           {title}
         </h2>
         {subtitle && (
-          <p className="mt-2 text-ink text-sm sm:text-base leading-relaxed">
+          <p className="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
             {subtitle}
           </p>
         )}
-      </div>
+      </div>}
 
       <AnimatePresence mode="wait">
         {status === 'success' ? (
@@ -78,16 +87,16 @@ export function ContactForm({
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
             role="status"
-            className="rounded-xl bg-emerald-50 border border-emerald-200 p-6 sm:p-8 text-center space-y-4"
+            className="rounded-xl bg-slate-900 border border-cyan-400/40 p-6 sm:p-8 text-center space-y-4 text-white"
           >
             <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 font-condensed uppercase tracking-wide">
+            <h3 className="text-xl font-bold text-white font-condensed uppercase tracking-wide">
               Thank You! We Have Received Your Request.
             </h3>
-            <p className="text-sm text-ink max-w-md mx-auto">
-              Our Casnovia drilling team has received your information. We are checking the local aquifer depth for your area and will contact you promptly.
+            <p className="text-sm text-slate-300 max-w-md mx-auto">
+              Thanks. We will call you within [CONFIRM hours] hours.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
@@ -117,7 +126,8 @@ export function ContactForm({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-5"
+            className="contact-form-fields space-y-5"
+            aria-live="polite"
             noValidate
           >
             {/* Error Banner with animation */}
@@ -126,13 +136,13 @@ export function ContactForm({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 role="alert"
-                className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-900 text-sm flex items-start gap-3"
+                className="p-4 rounded-lg bg-red-950/35 border border-red-400/40 text-red-100 text-sm flex items-start gap-3"
               >
                 <AlertCircle className="w-5 h-5 text-water-700 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold">Unable to submit form</p>
-                  <p className="text-xs mt-0.5 text-red-700">{errorMessage}</p>
-                  <p className="text-xs mt-1 text-ink">
+                  <p className="field-error-text mt-1">{errorMessage}</p>
+                  <p className="field-hint mt-1">
                     Please call us directly at{' '}
                     <a
                       href={`tel:${siteData.phoneClean}`}
@@ -158,7 +168,7 @@ export function ContactForm({
             </div>
 
             {/* Row 1: Name and Phone */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div hidden={isMobile && step !== 1} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Full Name"
                 placeholder="e.g. John Miller"
@@ -177,8 +187,9 @@ export function ContactForm({
               />
             </div>
 
-            {/* Row 2: Email and City / Township */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Email is on step two on mobile; town stays on step one. */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div hidden={isMobile && step !== 2}>
               <Input
                 label="Email Address"
                 type="email"
@@ -187,6 +198,8 @@ export function ContactForm({
                 error={errors.email?.message}
                 {...register('email')}
               />
+              </div>
+              <div hidden={isMobile && step !== 1}>
               <Input
                 label="City or Township (Michigan)"
                 placeholder="e.g. Casnovia, Sand Lake, Newaygo, Fremont"
@@ -195,19 +208,21 @@ export function ContactForm({
                 helperText="Helps us look up Michigan well depth logs"
                 {...register('cityTownship')}
               />
+              </div>
             </div>
 
             {/* Row 3: Service Needed */}
-            <div>
+            <div hidden={isMobile && step !== 2}>
               <label
                 htmlFor="service-select"
-                className="block text-sm font-semibold text-slate-800 mb-1.5"
+                className="glass-label mb-1.5 block"
               >
                 Service Needed <span className="text-water-700">*</span>
               </label>
               <select
                 id="service-select"
-                className={`flex h-11 w-full rounded-lg border bg-white px-3.5 py-2 text-base text-slate-900 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+                aria-invalid={Boolean(errors.serviceNeeded)}
+                className={`contact-select form-control-glow flex h-11 w-full rounded-lg border bg-transparent px-3.5 py-2 text-base text-white shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 ${
                   errors.serviceNeeded
                     ? 'border-red-600 focus-visible:border-red-600 focus-visible:ring-red-600/20'
                     : 'border-slate-300 focus-visible:border-water-600 focus-visible:ring-water-500/20'
@@ -224,14 +239,18 @@ export function ContactForm({
                   </option>
                 ))}
               </select>
-              {errors.serviceNeeded && (
-                <p className="mt-1.5 text-sm font-medium text-red-600">
-                  {errors.serviceNeeded.message}
-                </p>
-              )}
+              {errors.serviceNeeded && <p className="field-error mt-1.5"><AlertCircle size={16} aria-hidden="true" />{errors.serviceNeeded.message}</p>}
+            </div>
+
+            <div hidden={isMobile && step !== 2}>
+              <label htmlFor="preferred-time" className="glass-label mb-1.5 block">Preferred contact time</label>
+              <select id="preferred-time" className="contact-select form-control-glow flex h-11 w-full rounded-lg border border-slate-500 bg-transparent px-3.5 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-500" {...register('preferredTime')}>
+                <option value="">No preference</option><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option>
+              </select>
             </div>
 
             {/* Row 4: Message */}
+            <div hidden={isMobile && step !== 2}>
             <Textarea
               label="Project or Problem Description"
               rows={4}
@@ -240,28 +259,29 @@ export function ContactForm({
               error={errors.message?.message}
               {...register('message')}
             />
+            </div>
 
             {/* Row 5: Consent Checkbox */}
-            <div className="pt-1">
+            <div hidden={isMobile && step !== 2} className="pt-1">
               <label className="flex items-start gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
-                  className="mt-1 w-4 h-4 rounded border-slate-300 text-water-600 focus:ring-water-600 focus:ring-offset-0 cursor-pointer"
+                  className="mt-1 size-5 rounded border-2 border-white text-aqua accent-aqua focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
                   {...register('consent')}
                 />
-                <span className="text-xs sm:text-sm text-ink group-hover:text-ink-dark">
-                  I agree to allow M&J Water Wells to contact me by phone or email regarding this estimate request. We respect your privacy and never share information.
+                <span className="glass-consent-text">
+                  I agree to allow M&J Water Wells to contact me by phone or email regarding this estimate request.
                 </span>
               </label>
-              {errors.consent && (
-                <p className="mt-1.5 text-sm font-medium text-red-600">
-                  {errors.consent.message}
-                </p>
-              )}
+              {errors.consent && <p aria-live="polite" className="field-error mt-1.5"><AlertCircle size={16} aria-hidden="true" />{errors.consent.message}</p>}
             </div>
 
             {/* Submit Button */}
             <div className="pt-2">
+              {isMobile && <div className="mb-4" aria-label={`Step ${step} of 2`}><div className="mb-1 text-xs font-bold uppercase text-water-700">Step {step} of 2</div><div className="contact-progress h-2 overflow-hidden rounded-full bg-water-100" style={{ '--progress': step === 1 ? '50%' : '100%' } as React.CSSProperties}><div className={`h-full bg-water-600 transition-[width] ${step === 1 ? 'w-1/2' : 'w-full'}`} /></div></div>}
+              {isMobile && step === 1 ? <Button type="button" className="w-full" onClick={async () => { const valid = await trigger(['name', 'phone', 'cityTownship']); if (valid) setStep(2) }}>Next</Button> : null}
+              {isMobile && step === 2 ? <Button type="button" variant="outline" className="mb-3 w-full" onClick={() => setStep(1)}>Back</Button> : null}
+              {(!isMobile || step === 2) && <>
               <Button
                 type="submit"
                 variant="primary"
@@ -281,7 +301,7 @@ export function ContactForm({
                   </>
                 )}
               </Button>
-              <p className="text-center text-xs text-ink-light mt-2.5">
+              <p className="text-center text-[13px] text-slate-300 mt-2.5">
                 Prefer speaking directly with a driller right now? Call{' '}
                 <a
                   href={`tel:${siteData.phoneClean}`}
@@ -290,10 +310,11 @@ export function ContactForm({
                   {siteData.phone}
                 </a>
               </p>
+              </>}
             </div>
           </motion.form>
         )}
       </AnimatePresence>
-    </div>
+    </Glass>
   )
 }

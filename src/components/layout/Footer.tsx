@@ -15,7 +15,7 @@ export function Footer() {
           <div className="space-y-3">
             <Link to="/" className="inline-block group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-400 rounded-lg">
               <img
-                src="/images/mj-logo-white.png"
+                src="/images/mj-mark.svg"
                 alt="M&J Water Wells, Casnovia, Michigan"
                 width={220}
                 height={48}
@@ -112,6 +112,7 @@ export function Footer() {
             <Link to="/contact" className="hover:text-aqua transition-colors">
               Contact
             </Link>
+            <span>[CONFIRM: Google Business link]</span>
           </div>
         </div>
       </Container>

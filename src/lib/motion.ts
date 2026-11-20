@@ -18,6 +18,14 @@ export const DURATIONS = {
   page: 0.2,
 }
 
+export const MOTION_PRESETS = {
+  glowIn: { duration: 0.25, ease: 'easeOut' },
+  glowOut: { duration: 0.2, ease: 'easeIn' },
+  liftHover: { duration: 0.2, ease: 'easeOut' },
+  pressDown: { duration: 0.1, ease: 'easeOut' },
+  labelUp: { duration: 0.2, ease: 'easeOut' },
+} as const
+
 export const STAGGERS = {
   hero: 0.08,
   grid: 0.08,
