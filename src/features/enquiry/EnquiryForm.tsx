@@ -150,10 +150,10 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     return (
       <div className="text-center py-6 space-y-4">
         <SuccessCheck />
-        <h3 className="text-2xl font-black text-water-900 font-condensed uppercase tracking-tight">
+        <h3 className="text-2xl font-black text-slate-900 font-condensed uppercase tracking-tight">
           Estimate Request Received
         </h3>
-        <p className="text-base text-water-800 leading-relaxed max-w-sm mx-auto">
+        <p className="text-base text-slate-700 leading-relaxed max-w-sm mx-auto">
           Thanks. We will call you within [CONFIRM hours] hours.
         </p>
         <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -168,7 +168,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-water-100 hover:bg-water-200 text-water-900 font-condensed font-bold uppercase tracking-wider text-sm transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 font-condensed font-bold uppercase tracking-wider text-sm transition-colors cursor-pointer"
             >
               Close
             </button>
@@ -198,9 +198,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       <div>
         <label
           htmlFor="enquiry-name"
-          className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+          className="glass-label mb-1.5 block"
         >
-          Full Name <span className="text-water-600">*</span>
+          Full Name <span className="text-cyan-200">*</span>
         </label>
         <input
           id="enquiry-name"
@@ -210,9 +210,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           onChange={handleChange}
           placeholder="e.g. John Miller"
           aria-invalid={Boolean(errors.name)}
-          className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
-            errors.name ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
-          } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
+          className={`glass-field form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+            errors.name ? 'border-red-300 bg-red-950/30' : 'border-slate-400/60 bg-white/5'
+          } text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors`}
         />
         {errors.name && <FieldError>{errors.name}</FieldError>}
       </div>
@@ -222,9 +222,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         <div>
           <label
             htmlFor="enquiry-phone"
-            className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+            className="glass-label mb-1.5 block"
           >
-            Phone Number <span className="text-water-600">*</span>
+            Phone Number <span className="text-cyan-200">*</span>
           </label>
           <input
             id="enquiry-phone"
@@ -234,9 +234,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             onChange={handleChange}
             placeholder="(616) 000-0000"
             aria-invalid={Boolean(errors.phone)}
-            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
-              errors.phone ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
-            } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
+            className={`glass-field form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+              errors.phone ? 'border-red-300 bg-red-950/30' : 'border-slate-400/60 bg-white/5'
+            } text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors`}
           />
           {errors.phone && <FieldError>{errors.phone}</FieldError>}
         </div>
@@ -244,9 +244,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         <div>
           <label
             htmlFor="enquiry-email"
-            className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+            className="glass-label mb-1.5 block"
           >
-            Email Address <span className="text-water-600">*</span>
+            Email Address <span className="text-cyan-200">*</span>
           </label>
           <input
             id="enquiry-email"
@@ -256,9 +256,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             onChange={handleChange}
             placeholder="you@example.com"
             aria-invalid={Boolean(errors.email)}
-            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
-              errors.email ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
-            } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
+            className={`glass-field form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+              errors.email ? 'border-red-300 bg-red-950/30' : 'border-slate-400/60 bg-white/5'
+            } text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors`}
           />
           {errors.email && <FieldError>{errors.email}</FieldError>}
         </div>
@@ -269,9 +269,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         <div>
           <label
             htmlFor="enquiry-city"
-            className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+            className="glass-label mb-1.5 block"
           >
-            City or Township <span className="text-water-600">*</span>
+            City or Township <span className="text-cyan-200">*</span>
           </label>
           <input
             id="enquiry-city"
@@ -281,9 +281,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             onChange={handleChange}
             placeholder="e.g. Casnovia, Newaygo"
             aria-invalid={Boolean(errors.cityTownship)}
-            className={`form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
-              errors.cityTownship ? 'border-red-500 bg-red-50/50' : 'border-water-200 bg-white'
-            } text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors`}
+            className={`glass-field form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border ${
+              errors.cityTownship ? 'border-red-300 bg-red-950/30' : 'border-slate-400/60 bg-white/5'
+            } text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors`}
           />
           {errors.cityTownship && <FieldError>{errors.cityTownship}</FieldError>}
         </div>
@@ -291,16 +291,16 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         <div>
           <label
             htmlFor="enquiry-service"
-            className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+            className="glass-label mb-1.5 block"
           >
-            Service Needed <span className="text-water-600">*</span>
+            Service Needed <span className="text-cyan-200">*</span>
           </label>
           <select
             id="enquiry-service"
             name="serviceNeeded"
             value={values.serviceNeeded}
             onChange={handleChange}
-            className="form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors"
+            className="contact-select form-control-glow w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-400/60 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors"
           >
             <option value="new well">New Well Drilling</option>
             <option value="repair">Well Repair</option>
@@ -316,9 +316,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       <div>
         <label
           htmlFor="enquiry-message"
-          className="block text-xs font-bold text-water-900 uppercase tracking-wider font-condensed mb-1"
+          className="glass-label mb-1.5 block"
         >
-          Project Details <span className="text-water-500 font-normal">(optional)</span>
+          Project Details <span className="text-water-700 font-normal">(optional)</span>
         </label>
         <textarea
           id="enquiry-message"
@@ -327,7 +327,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           value={values.message}
           onChange={handleChange}
           placeholder="Tell us about your well or water issue..."
-          className="form-control-glow w-full px-3.5 py-2 text-sm rounded-lg border border-water-200 bg-white text-water-900 focus:outline-none focus:ring-2 focus:ring-water-500 transition-colors resize-none"
+          className="glass-field form-control-glow w-full px-3.5 py-2 text-sm rounded-lg border text-white focus:outline-none focus:ring-2 focus:ring-cyan-300/50 transition-colors resize-none"
         />
       </div>
 
@@ -339,7 +339,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
           name="consent"
           checked={values.consent}
           onChange={handleChange}
-          className="mt-1 size-5 rounded border-2 border-white text-aqua accent-aqua focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
+          className="mt-1 size-5 rounded border-2 border-water-700 text-aqua accent-water-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-water-700 cursor-pointer"
         />
         <label htmlFor="enquiry-consent" className="glass-consent-text leading-snug cursor-pointer">
           I agree to allow M&J Water Wells to contact me regarding my well estimate.

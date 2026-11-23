@@ -28,13 +28,13 @@ export function Button({
 
   const variants = {
     primary:
-      'glass-button bg-water-600/80 border border-white/30 text-white hover:bg-water-600/92 active:bg-water-700 shadow-md hover:shadow-lg focus-visible:ring-white',
+      'glass-button bg-water-600 border border-white/30 text-white hover:bg-water-700 active:bg-water-700 shadow-md hover:shadow-lg focus-visible:ring-water-400',
     secondary:
       'glass-button bg-white/8 border border-white/30 text-white hover:bg-white/14 active:bg-white/10 shadow-xs focus-visible:ring-white',
     dark:
       'bg-button-dark text-white hover:bg-button-dark-hover active:bg-black shadow-md hover:shadow-lg focus-visible:ring-button-dark',
     outline:
-      'glass-button border border-white/30 text-white bg-white/8 hover:bg-white/14 active:bg-white/10 focus-visible:ring-white',
+      'glass-button border border-water-700 text-water-700 bg-transparent hover:bg-water-50 active:bg-water-100 focus-visible:ring-water-700',
     ghost:
       'glass-button text-water-900 hover:bg-white/10 hover:text-white focus-visible:ring-white',
     white:

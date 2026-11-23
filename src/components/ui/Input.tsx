@@ -22,7 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ className, labe
   const [focused, setFocused] = useState(false)
   const reduce = useReducedMotion()
   return <div className="form-field-glow w-full">
-    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? '#a5f3fc' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-cyan-200">*</span>}</motion.label>}
+    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? 'var(--color-accent-teal-dk)' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-water-700">*</span>}</motion.label>}
     <div className="form-control-shell" data-invalid={Boolean(error)}>
       <input id={inputId} ref={ref} onFocus={(event) => { setFocused(true); onFocus?.(event) }} onBlur={(event) => { setFocused(false); onBlur?.(event) }} aria-invalid={Boolean(error)} aria-describedby={error || helperText ? feedbackId : props['aria-describedby']} className={cn('glass-field form-control-glow flex h-11 w-full rounded-lg border px-3.5 py-2 text-base shadow-xs focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50', error && 'is-invalid', className)} {...props} />
     </div>
@@ -43,7 +43,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ classN
   const [focused, setFocused] = useState(false)
   const reduce = useReducedMotion()
   return <div className="form-field-glow w-full">
-    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? '#a5f3fc' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-cyan-200">*</span>}</motion.label>}
+    {label && <motion.label htmlFor={inputId} className="glass-label mb-1.5 block" animate={{ y: focused ? -2 : 0, color: focused ? 'var(--color-accent-teal-dk)' : undefined }} transition={{ duration: reduce ? 0.01 : 0.2 }}>{label}{props.required && <span className="ml-1 text-water-700">*</span>}</motion.label>}
     <div className="form-control-shell" data-invalid={Boolean(error)}>
       <textarea id={inputId} ref={ref} rows={rows} onFocus={(event) => { setFocused(true); onFocus?.(event) }} onBlur={(event) => { setFocused(false); onBlur?.(event) }} aria-invalid={Boolean(error)} aria-describedby={error || helperText ? feedbackId : props['aria-describedby']} className={cn('glass-field form-control-glow flex w-full rounded-lg border px-3.5 py-2.5 text-base shadow-xs focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50', error && 'is-invalid', className)} {...props} />
     </div>

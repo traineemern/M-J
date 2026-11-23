@@ -40,7 +40,7 @@ export function ContactPage() {
     </Container></section>
 
     <section className="bg-sand py-14 sm:py-20"><Container className="grid items-start gap-8 lg:grid-cols-[1.2fr_.8fr]">
-      <div id="contact-form" className="scroll-mt-24"><ContactForm title="Request a free estimate" subtitle="Tell us about your property location and water needs." className="!bg-white !text-ink"/></div>
+      <div id="contact-form" className="scroll-mt-24"><ContactForm title="Request a free estimate" subtitle="Tell us about your property location and water needs."/></div>
       <aside className="grid gap-4">
         <Card variant="dark" className="!bg-water-950"><p className="contact-eyebrow">Prefer to talk?</p><a className="mt-2 block text-2xl font-black text-white" href={`tel:${siteData.phoneClean}`}>{siteData.phone}</a><Button href={`tel:${siteData.phoneClean}`} variant="primary" className="mt-4 rounded-full"><Phone size={16}/>Call now</Button></Card>
         <Card><h2 className="font-condensed text-xl font-black uppercase text-water-900">Service area</h2><p className="mt-2 text-ink">Casnovia, Sand Lake, Newaygo, Fremont &amp; Hesperia, and across West Michigan.</p><a className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-water-700" href="/areas/newaygo">Explore service areas <ArrowRight size={15}/></a></Card>

@@ -8,19 +8,19 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-water-950 text-slate-300 pt-12 pb-16 border-t-4 border-water-600">
+    <footer className="site-footer bg-water-950 text-slate-300 pt-12 pb-16 border-t-4 border-water-600">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-water-900">
           {/* Column 1: Company Profile with White Logo */}
           <div className="space-y-3">
             <Link to="/" className="inline-block group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-400 rounded-lg">
               <img
-                src="/images/mj-mark.svg"
+                src="/images/mj-original-logo.png"
                 alt="M&J Water Wells, Casnovia, Michigan"
                 width={220}
                 height={48}
                 loading="lazy"
-                className="h-10 w-auto object-contain group-hover:scale-102 transition-transform duration-200"
+                className="h-8 w-auto object-contain group-hover:scale-102 transition-transform duration-200"
               />
             </Link>
             <div className="text-xs text-slate-400 font-medium">

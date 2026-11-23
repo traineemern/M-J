@@ -13,7 +13,7 @@ export const EnquiryPopup: React.FC = () => {
       title="Request a Free Estimate"
       titleId="enquiry-modal-title"
     >
-      <p className="text-xs text-water-700 mb-4 -mt-1">
+      <p className="text-xs text-slate-700 mb-4 -mt-1">
         Fast, honest estimates from licensed West Michigan well drillers.
       </p>
       <EnquiryForm

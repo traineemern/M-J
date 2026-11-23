@@ -266,7 +266,7 @@ export function ContactForm({
               <label className="flex items-start gap-3 cursor-pointer group">
                 <input
                   type="checkbox"
-                  className="mt-1 size-5 rounded border-2 border-white text-aqua accent-aqua focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
+                  className="mt-1 size-5 rounded border-2 border-water-700 text-aqua accent-water-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-water-700 cursor-pointer"
                   {...register('consent')}
                 />
                 <span className="glass-consent-text">
