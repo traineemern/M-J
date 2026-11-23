@@ -27,7 +27,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       <div
         className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
           isManager
-            ? 'glass-chat-manager text-white border border-white/20 rounded-tl-xs shadow-xs'
+            ? 'glass-chat-manager text-ink border border-white/20 rounded-tl-xs shadow-xs'
             : 'glass-chat-customer text-white rounded-tr-xs shadow-xs font-medium'
         }`}
       >

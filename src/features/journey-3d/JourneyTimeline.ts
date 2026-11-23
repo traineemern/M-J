@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import type { MutableRefObject } from 'react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -7,18 +8,20 @@ if (typeof window !== 'undefined') {
 
 export interface JourneyTimelineOptions {
   triggerElement: HTMLElement
+  maxProgress: MutableRefObject<number>
   onUpdate: (progress: number) => void
 }
 
-export function createJourneyTimeline({ triggerElement, onUpdate }: JourneyTimelineOptions) {
+export function createJourneyTimeline({ triggerElement, maxProgress, onUpdate }: JourneyTimelineOptions) {
   const st = ScrollTrigger.create({
     trigger: triggerElement,
     start: 'top top',
     end: '+=400%',
     pin: true,
-    scrub: 0.3,
     onUpdate: (self) => {
-      onUpdate(self.progress)
+      const next = Math.max(maxProgress.current, self.progress)
+      maxProgress.current = next
+      onUpdate(next)
     },
   })
 

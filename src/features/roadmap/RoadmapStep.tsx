@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'motion/react'
 import {
   Calculator,
   MapPin,
@@ -40,17 +39,9 @@ const gridPlacementClasses: Record<number, string> = {
 
 interface RoadmapStepProps {
   step: RoadmapStepItem
-  index: number
-  shouldReduceMotion: boolean
-  onHover?: (stepNumber: number | null) => void
 }
 
-export const RoadmapStep: React.FC<RoadmapStepProps> = ({
-  step,
-  index,
-  shouldReduceMotion,
-  onHover,
-}) => {
+export const RoadmapStep: React.FC<RoadmapStepProps> = ({ step }) => {
   const { openEnquiry } = useEnquiry()
   let openVideoModal: (() => void) | undefined
   try {
@@ -63,7 +54,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
   const isHashLink = step.link?.startsWith('#')
 
   const titleLinkClasses =
-    'hover:text-water-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-700 focus-visible:ring-offset-2 rounded transition-colors duration-150 inline-block'
+    'hover:text-water-700 sm:hover:text-accent-cyan underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-700 focus-visible:ring-offset-2 rounded transition-colors duration-150 inline-block'
 
   const renderTitle = () => {
     // Step 1 triggers the Enquiry popup on click while preserving /contact link for fallback & SEO
@@ -76,7 +67,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
               e.preventDefault()
               openEnquiry()
             }}
-            className={`${titleLinkClasses} text-water-900 cursor-pointer text-left sm:text-center`}
+            className={`${titleLinkClasses} text-water-900 sm:text-text-light cursor-pointer text-left sm:text-center`}
             aria-label={`${step.title} (request an estimate)`}
           >
             {step.title}
@@ -100,7 +91,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
                 openVideoModal()
               }
             }}
-            className={`${titleLinkClasses} text-water-900 cursor-pointer`}
+            className={`${titleLinkClasses} text-water-900 sm:text-text-light cursor-pointer`}
             aria-label={`${step.title} (watch drilling video)`}
           >
             {step.title}
@@ -122,7 +113,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
         <h3 className="text-base sm:text-[17px] font-black font-condensed uppercase tracking-tight leading-tight">
           <a
             href={step.link}
-            className={`${titleLinkClasses} text-water-900`}
+            className={`${titleLinkClasses} text-water-900 sm:text-text-light`}
             aria-label={`${step.title} (go to drilling demonstration)`}
           >
             {step.title}
@@ -135,7 +126,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
       <h3 className="text-base sm:text-[17px] font-black font-condensed uppercase tracking-tight leading-tight">
         <Link
           to={step.link}
-          className={`${titleLinkClasses} text-water-900`}
+          className={`${titleLinkClasses} text-water-900 sm:text-text-light`}
           aria-label={`${step.title} (view ${step.linkText || 'details'})`}
         >
           {step.title}
@@ -147,30 +138,15 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
   const gridClass = gridPlacementClasses[step.step] || ''
 
   return (
-    <motion.li
-      className={`group relative flex flex-row sm:flex-col items-start sm:items-center text-left sm:text-center gap-3 sm:gap-0 ${gridClass}`}
-      onMouseEnter={() => onHover?.(step.step)}
-      onMouseLeave={() => onHover?.(null)}
-      onFocus={() => onHover?.(step.step)}
-      onBlur={() => onHover?.(null)}
-      initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-20px' }}
-      transition={{
-        duration: 0.35,
-        delay: index * 0.08, // 80ms sequential stagger
-        ease: 'easeOut',
-      }}
-    >
-      {/* Numbered Node with 3D Depth Lift Effect on Active/Hover */}
+    <li className={`group relative flex flex-row sm:flex-col items-start sm:items-center text-left sm:text-center gap-3 sm:gap-0 ${gridClass}`}>
+      {/* Numbered Node */}
       <div
         aria-hidden="true"
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-water-600 text-white flex items-center justify-center shrink-0 relative shadow-sm ring-4 ring-white z-20 sm:mb-1.5 transition-all duration-200 group-hover:-translate-y-1.5 group-hover:scale-110 group-hover:shadow-[0_12px_24px_-4px_rgba(2,132,199,0.45)] group-hover:ring-sky-300 cursor-pointer"
-        style={{ transformStyle: 'preserve-3d' }}
+        className="roadmap-step-node w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-water-950 text-white border-2 border-accent-teal flex items-center justify-center shrink-0 relative ring-4 ring-white z-20 sm:mb-1.5"
       >
-        <IconComponent className="w-5 h-5 text-white transition-transform duration-200 group-hover:scale-105" />
+        <IconComponent className="w-5 h-5 text-white" />
         {/* Step Number Badge */}
-        <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-water-800 text-white text-[10px] sm:text-[11px] font-black flex items-center justify-center ring-1 sm:ring-2 ring-white shadow-xs">
+        <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent-teal text-white text-[10px] sm:text-[11px] font-black flex items-center justify-center ring-1 sm:ring-2 ring-white shadow-xs">
           {step.step}
         </span>
       </div>
@@ -182,7 +158,7 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
       <div className="flex-1 w-full bg-water-50/90 sm:bg-transparent border border-water-200/80 sm:border-none rounded-xl p-3 sm:p-0 shadow-2xs sm:shadow-none">
         {/* Header row / badge */}
         <div className="flex items-center justify-between sm:justify-center gap-2 mb-1 sm:mb-0.5">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-water-700 font-condensed block">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-water-700 sm:text-accent-cyan font-condensed block">
             Step {step.step}
           </span>
           {step.badge && (
@@ -195,11 +171,8 @@ export const RoadmapStep: React.FC<RoadmapStepProps> = ({
         {/* Title: 16px on mobile, 18px bold on desktop */}
         <div className="mb-1 sm:mb-0.5">{renderTitle()}</div>
 
-        {/* Description: 14px on mobile, 15px minimum on desktop (water-900 at 90%) */}
-        <p className="text-sm sm:text-[15px] font-condensed text-water-900/90 leading-tight sm:leading-[1.2] max-w-none">
-          {step.description}
-        </p>
+
       </div>
-    </motion.li>
+    </li>
   )
 }

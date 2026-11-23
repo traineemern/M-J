@@ -35,6 +35,7 @@ export const JourneyStage: React.FC<JourneyStageProps> = ({
   forcePoster = false,
 }) => {
   const containerRef = useRef<HTMLElement>(null)
+  const maxProgress = useRef(0)
   const shouldReduceMotion = useReducedMotion()
   const isMobile = useIsMobile(768)
 
@@ -77,6 +78,7 @@ export const JourneyStage: React.FC<JourneyStageProps> = ({
 
     const timeline = createJourneyTimeline({
       triggerElement: containerRef.current,
+      maxProgress,
       onUpdate: (p) => {
         setProgress(p)
       },
