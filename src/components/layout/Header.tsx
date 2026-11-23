@@ -38,7 +38,7 @@ export function Header() {
 
   return (
     <>
-      <header data-glass-blur="true" className={`site-header glass-bar fixed inset-x-0 top-0 z-50 h-[72px] ${solid ? 'glass-bar--strong' : ''}`}>
+      <header data-glass-blur="true" className={`site-header glass-bar fixed inset-x-0 top-0 z-50 h-[72px] ${solid ? 'glass-bar--strong bg-water-950/[0.92]' : ''}`}>
         <Container className="h-full max-w-none px-4 sm:px-6 min-[900px]:px-8">
           <div className="relative flex h-full items-center justify-between min-[900px]:grid min-[900px]:grid-cols-[160px_1fr_auto] min-[900px]:gap-5">
             <Link to="/" aria-label="M&J Water Wells home" className="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-water-300 focus-visible:ring-offset-2 focus-visible:ring-offset-water-950">
