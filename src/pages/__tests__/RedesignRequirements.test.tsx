@@ -20,6 +20,7 @@ describe('redesign requirements', () => {
     expect(screen.queryByText(/see how we drill/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/frequently asked questions/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/how a project moves forward/i)).not.toBeInTheDocument()
+    expect(document.querySelector('.home-availability')).not.toBeInTheDocument()
   })
 
   it('uses the supplied six-image collage for the homepage project carousel', () => {
@@ -61,6 +62,7 @@ describe('redesign requirements', () => {
     render(<ContactPage />)
     expect(document.querySelector('.contact-reference__hero')).not.toBeInTheDocument()
     expect(document.querySelector('.contact-reference__hero-image')).not.toBeInTheDocument()
+    expect(document.querySelector('.contact-reference__cards')).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'Contact M&J Water Wells' })).toBeInTheDocument()
   })
 

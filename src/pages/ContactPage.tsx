@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { SEO, generateLocalBusinessSchema } from '@/lib/seo'
-import { resolveContent, siteContent, siteData, serviceTowns } from '@/data/site'
+import { resolveContent, siteContent, serviceTowns } from '@/data/site'
 
 import { EnquiryForm } from '@/features/enquiry/EnquiryForm'
 
@@ -22,30 +22,6 @@ export function ContactPage() {
         <p className="night-eyebrow">{siteContent.pages.contact.contactLabel.value}</p>
         <h1 id="contact-title">{siteContent.pages.contact.title.value}</h1>
       </header>
-
-      <section className="contact-reference__cards" aria-label={siteContent.pages.contact.detailsLabel.value}>
-        <article>
-          <span className="contact-reference__card-icon"><MapPin size={20} aria-hidden="true" /></span>
-          <div>
-            <p className="night-eyebrow">{siteContent.pages.labels.addressHeading.value}</p>
-            <address>{siteData.address.full}</address>
-          </div>
-        </article>
-        <article>
-          <span className="contact-reference__card-icon"><Phone size={20} aria-hidden="true" /></span>
-          <div>
-            <p className="night-eyebrow">{siteContent.pages.labels.phoneHeading.value}</p>
-            <a href={`tel:${siteData.phoneClean}`}>{siteData.phone}</a>
-          </div>
-        </article>
-        <article>
-          <span className="contact-reference__card-icon"><Mail size={20} aria-hidden="true" /></span>
-          <div>
-            <p className="night-eyebrow">{siteContent.pages.labels.emailHeading.value}</p>
-            <a href={`mailto:${siteData.email}`}>{siteData.email}</a>
-          </div>
-        </article>
-      </section>
 
       <section className="contact-reference__content" aria-label={siteContent.pages.contact.contactAria.value}>
         <div className="contact-reference__form">

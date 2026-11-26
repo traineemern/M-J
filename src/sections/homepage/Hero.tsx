@@ -1,6 +1,5 @@
-import { useRef, useState, type FormEvent } from 'react'
-import { ArrowDown, ArrowRight, MapPin, Play } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { ArrowDown, ArrowRight, Play } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { ContentText } from '@/components/content/ContentText'
 import { siteContent, resolveContent } from '@/data/site'
 
@@ -10,23 +9,6 @@ interface HeroProps {
 
 export function Hero({ onWatchVideo }: HeroProps) {
   const content = siteContent.homepage.hero
-  const [zip, setZip] = useState('')
-  const [zipError, setZipError] = useState(false)
-  const navigate = useNavigate()
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  function submitZip(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    if (!/^\d{5}$/.test(zip)) {
-      setZipError(true)
-      inputRef.current?.focus()
-      return
-    }
-
-    setZipError(false)
-    // This forwards the ZIP to Contact only; live availability requires backend work.
-    navigate(`/contact?zip=${encodeURIComponent(zip)}`)
-  }
 
   return (
     <section className="home-hero" aria-labelledby="home-hero-title">
@@ -62,34 +44,6 @@ export function Hero({ onWatchVideo }: HeroProps) {
             </button>
           </div>
         </div>
-        <aside className="home-availability glass-panel" aria-labelledby="availability-heading">
-          <h2 id="availability-heading"><MapPin size={19} aria-hidden="true" /><ContentText field={content.availabilityTitle} /></h2>
-          <form onSubmit={submitZip} noValidate>
-            <label className="sr-only" htmlFor="availability-zip"><ContentText field={content.zipLabel} /></label>
-            <input
-              ref={inputRef}
-              id="availability-zip"
-              name="zip"
-              inputMode="numeric"
-              autoComplete="postal-code"
-              maxLength={5}
-              pattern="[0-9]{5}"
-              placeholder={resolveContent(content.zipPlaceholder) ?? ''}
-              value={zip}
-              onChange={(event) => {
-                setZip(event.target.value.replace(/\D/g, '').slice(0, 5))
-                setZipError(false)
-              }}
-              aria-invalid={zipError}
-              aria-describedby={zipError ? 'availability-zip-error' : undefined}
-            />
-            <button type="submit" aria-label={resolveContent(content.zipSubmit) ?? undefined}>
-              <ArrowRight size={17} aria-hidden="true" />
-            </button>
-          </form>
-          {zipError && <p id="availability-zip-error" className="home-form-error"><ContentText field={siteContent.homepage.labels.zipError} /></p>}
-          <p className="home-availability__serving"><span aria-hidden="true" /><ContentText field={content.servingLine} /></p>
-        </aside>
         <a className="home-scroll-indicator" href="#home-services">
           <span><ArrowDown size={16} aria-hidden="true" /></span>
           <ContentText field={content.scrollLabel} />

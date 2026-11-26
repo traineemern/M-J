@@ -1651,8 +1651,8 @@ body,
 .faq-reference .faq-page__empty { padding: 40px 0; }
 .faq-closing--editorial { background: #1a2028; }
 
-.contact-reference__page-heading { padding: clamp(42px, 6vw, 72px) max(22px, calc((100vw - 1200px) / 2)); background: #0e1217; }
-.contact-reference__page-heading h1 { margin: 14px 0 0; color: #f2f5f8; font: 800 clamp(38px, 5vw, 64px)/.95 var(--display-font); letter-spacing: -.06em; }
+.contact-reference__page-heading { padding: clamp(28px, 4vw, 46px) max(22px, calc((100vw - 1200px) / 2)); background: #0e1217; }
+.contact-reference__page-heading h1 { margin: 10px 0 0; color: #f2f5f8; font: 800 clamp(28px, 3.8vw, 46px)/1 var(--display-font); letter-spacing: -.05em; }
 .contact-reference__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #394550; border-bottom: 1px solid #394550; background: #151c24; }
 .contact-reference__cards article { display: flex; min-width: 0; min-height: 150px; align-items: center; gap: 17px; padding: 22px clamp(18px, 3vw, 42px); border-right: 1px solid #394550; }
 .contact-reference__cards article:last-child { border-right: 0; }

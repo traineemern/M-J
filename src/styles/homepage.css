@@ -157,9 +157,8 @@
 .home-hero__inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: clamp(24px, 5vw, 74px);
 }
 
 .home-hero__copy {
@@ -452,7 +451,8 @@
 .home-testimonials__grid { display: grid; grid-template-columns: 0.7fr 1.2fr 0.56fr; align-items: center; gap: clamp(22px, 4vw, 54px); }
 .home-testimonials__intro h2 { font-size: clamp(2.1rem, 3.5vw, 3rem); }
 .home-testimonials__intro .home-button { margin-top: 18px; }
-.home-testimonial-card { position: relative; min-height: 230px; border: 1px solid var(--home-border); border-radius: 16px; padding: 28px; background: linear-gradient(145deg, #0d1d32, #0b1727); animation: home-testimonial-appear 420ms ease both; }
+.home-testimonial-card { position: relative; min-height: 230px; border: 1px solid var(--home-border); border-radius: 16px; padding: 28px; background: linear-gradient(145deg, #0d1d32, #0b1727); animation: home-testimonial-appear 420ms ease both; transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+.home-testimonial-card:hover { transform: translateY(-4px); border-color: #3d6c96; box-shadow: 0 16px 34px rgb(0 0 0 / 24%); }
 .home-testimonial-card__quote-mark { display: block; color: var(--home-light-blue); font: 800 4rem/0.8 var(--font-display); }
 .home-testimonial-card blockquote { margin: 14px 0 20px; color: var(--home-text); font-size: 0.96rem; line-height: 1.6; }
 .home-testimonial-card__rating { display: flex; align-items: center; gap: 4px; color: #ffc94a; font-size: 0.7rem; }
@@ -465,21 +465,23 @@
 .home-testimonial-card__dots { display: flex; align-items: center; justify-content: center; gap: 7px; }
 .home-testimonial-card__dots button { width: 7px; height: 7px; border: 0; border-radius: 999px; padding: 0; background: #8ca2b8; cursor: pointer; }
 .home-testimonial-card__dots button.is-active { width: 18px; background: var(--home-light-blue); }
-.home-testimonials__image { position: relative; aspect-ratio: 1.15; overflow: hidden; border: 1px solid var(--home-border); border-radius: 13px; background: var(--home-panel); }
+.home-testimonials__image { position: relative; aspect-ratio: 1.15; overflow: hidden; border: 1px solid var(--home-border); border-radius: 13px; background: var(--home-panel); transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+.home-testimonials__image:hover { transform: translateY(-4px); border-color: #3d6c96; box-shadow: 0 16px 34px rgb(0 0 0 / 24%); }
 .home-testimonials__photo { display: block; width: 100%; height: 100%; object-fit: cover; animation: home-testimonial-appear 420ms ease both; }
 @keyframes home-testimonial-appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
 .home-cta-band { position: relative; background: #08172a; }
-.home-cta-band__inner { display: grid; grid-template-columns: 1.1fr auto 1.5fr; align-items: center; gap: 28px; padding-block: 28px; }
-.home-cta-band__copy { display: flex; align-items: flex-start; gap: 12px; }
-.home-cta-band__copy > svg { flex: 0 0 auto; color: var(--home-light-blue); }
-.home-cta-band__copy h2 { margin: 0; color: var(--home-text); font-size: 1.13rem; }
-.home-cta-band__copy p { margin: 6px 0 0; color: #b9c9d8; font-size: 0.72rem; line-height: 1.5; }
-.home-cta-band__contacts { display: flex; justify-content: flex-end; gap: clamp(14px, 2vw, 28px); }
+.home-cta-band__inner { display: grid; grid-template-columns: 1.1fr auto 1.5fr; align-items: center; gap: 20px; padding-block: 18px; }
+.home-cta-band__copy { display: flex; align-items: flex-start; gap: 10px; }
+.home-cta-band__copy > svg { width: 22px; height: 22px; flex: 0 0 auto; color: var(--home-light-blue); }
+.home-cta-band__copy h2 { margin: 0; color: var(--home-text); font-size: 1rem; }
+.home-cta-band__copy p { margin: 5px 0 0; color: #b9c9d8; font-size: 0.66rem; line-height: 1.45; }
+.home-cta-band__inner > .home-button { min-height: 38px; padding-inline: 16px; font-size: 0.65rem; }
+.home-cta-band__contacts { display: flex; justify-content: flex-end; gap: clamp(12px, 1.6vw, 22px); }
 .home-cta-band__contacts a { display: flex; align-items: flex-start; gap: 8px; color: var(--home-light-blue); text-decoration: none; }
 .home-cta-band__contacts a > svg { flex: 0 0 auto; }
-.home-cta-band__contacts a > span { display: grid; gap: 4px; color: #c3d1df; font-size: 0.63rem; }
-.home-cta-band__contacts strong { color: var(--home-text); font-size: 0.65rem; font-weight: 600; }
+.home-cta-band__contacts a > span { display: grid; gap: 3px; color: #c3d1df; font-size: 0.58rem; }
+.home-cta-band__contacts strong { color: var(--home-text); font-size: 0.6rem; font-weight: 600; }
 
 .home-site-header {
   height: 78px !important;
@@ -560,7 +562,7 @@
   .home-site-header__nav > a { padding-inline: 6px; font-size: 0.94rem; }
   .home-site-header__nav > a::after { right: 6px; left: 6px; }
   .home-site-header__action .home-button { padding-inline: 11px; }
-  .home-hero__inner { grid-template-columns: minmax(0, 1fr) 260px; gap: 22px; }
+  .home-hero__inner { grid-template-columns: minmax(0, 1fr); }
   .home-services .home-container { grid-template-columns: 1fr; }
   .home-service-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .home-service-card { min-height: 230px; }
@@ -581,7 +583,6 @@
   .home-hero { min-height: auto; padding-block: 132px 82px; }
   .home-hero__inner { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .home-hero__copy { max-width: 760px; }
-  .home-availability { width: min(420px, 100%); }
   .home-scroll-indicator { bottom: -55px; }
   .home-work-panel { grid-row: auto; min-height: 300px; }
   .home-why__grid { grid-template-columns: 1fr 1fr; }
@@ -603,7 +604,6 @@
   .home-hero__description { max-width: 520px; font-size: 0.9rem; }
   .home-hero__actions { align-items: flex-start; flex-direction: column; }
   .home-button--play { min-height: 42px; }
-  .home-availability { padding: 16px; }
   .home-scroll-indicator { display: none; }
   .home-stat-strip__inner { grid-template-columns: 1fr; padding-block: 10px; }
   .home-stat { min-height: 54px; padding-inline: 10px; }
