@@ -1,36 +1,38 @@
 @import "tailwindcss";
-
-@font-face {
-  font-family: 'Geist';
-  src: url('/fonts/Geist-Variable.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import "./typography.css";
+@import "./night-rig.css";
+@import "./homepage.css";
 
 @theme {
-  --color-bg-cream: #E8D6B2;
-  --color-bg-card: #FFFFFF;
-  --color-bg-charcoal: #1B1E20;
-  --color-bg-charcoal-alt: #262A2D;
+  --color-home-base: #07111F;
+  --color-home-panel: #0E1D33;
+  --color-home-panel-border: #1C3350;
+  --color-home-primary: #2F8FE8;
+  --color-home-light-blue: #5CC3FF;
+  --color-home-text: #F2F6FA;
+  --color-home-muted: #9FB3C8;
+  --color-home-brand-red: #A11A12;
+  --color-night-charcoal: #0E1217;
+  --color-night-graphite: #1A2028;
+  --color-night-steel: #8A94A0;
+  --color-night-ice: #E8EEF3;
+  --color-night-blue: #1B5FA8;
+  --color-night-electric: #3DA5FF;
+  --color-night-line: #39414B;
+  --color-bg-cream: var(--color-night-charcoal);
+  --color-bg-card: var(--color-night-graphite);
+  --color-bg-charcoal: var(--color-night-charcoal);
+  --color-bg-charcoal-alt: var(--color-night-graphite);
   --color-accent-red: #C8321E;
-  --color-accent-cyan: #5CC8D8;
-  --color-accent-teal: #3F8E8E;
-  --color-accent-teal-dk: #2F6E6E;
-  --color-text-dark: #1B1E20;
-  --color-text-muted: #5A5F63;
-  --color-text-light: #F2EFE8;
+  --color-accent-cyan: var(--color-night-electric);
+  --color-accent-teal: var(--color-night-blue);
+  --color-accent-teal-dk: #154A84;
+  --color-text-dark: var(--color-night-ice);
+  --color-text-muted: var(--color-night-steel);
+  --color-text-light: var(--color-night-ice);
   --color-text-on-teal: #FFFFFF;
-  --color-border-dark: #3A3F43;
-  --color-border-light: #D4BF95;
+  --color-border-dark: var(--color-night-line);
+  --color-border-light: var(--color-night-line);
 
   /* Existing utility scales resolve through the shared palette. */
   --color-water-50: var(--color-bg-cream);
@@ -107,10 +109,10 @@
   --color-gray-900: var(--color-text-dark);
   --color-gray-950: var(--color-bg-charcoal);
 
-  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'Geist Mono', monospace;
-  --font-condensed: 'Oswald', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-raleway: 'Raleway', sans-serif;
+  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Anybody Variable', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', monospace;
+  --font-condensed: 'Anybody Variable', sans-serif;
   --glass-fill: color-mix(in srgb, var(--color-bg-charcoal) 92%, transparent);
   --glass-fill-strong: color-mix(in srgb, var(--color-bg-charcoal) 96%, transparent);
   --glass-border: var(--color-border-dark);
@@ -121,20 +123,20 @@
 }
 
 :root {
-  --color-bg-cream: #E8D6B2;
-  --color-bg-card: #FFFFFF;
-  --color-bg-charcoal: #1B1E20;
-  --color-bg-charcoal-alt: #262A2D;
+  --color-bg-cream: var(--color-night-charcoal);
+  --color-bg-card: var(--color-night-graphite);
+  --color-bg-charcoal: var(--color-night-charcoal);
+  --color-bg-charcoal-alt: var(--color-night-graphite);
   --color-accent-red: #C8321E;
-  --color-accent-cyan: #5CC8D8;
-  --color-accent-teal: #3F8E8E;
-  --color-accent-teal-dk: #2F6E6E;
-  --color-text-dark: #1B1E20;
-  --color-text-muted: #5A5F63;
-  --color-text-light: #F2EFE8;
+  --color-accent-cyan: var(--color-night-electric);
+  --color-accent-teal: var(--color-night-blue);
+  --color-accent-teal-dk: #154A84;
+  --color-text-dark: var(--color-night-ice);
+  --color-text-muted: var(--color-night-steel);
+  --color-text-light: var(--color-night-ice);
   --color-text-on-teal: #FFFFFF;
-  --color-border-dark: #3A3F43;
-  --color-border-light: #D4BF95;
+  --color-border-dark: var(--color-night-line);
+  --color-border-light: var(--color-night-line);
   --glass-fill: color-mix(in srgb, var(--color-bg-charcoal) 92%, transparent);
   --glass-fill-strong: color-mix(in srgb, var(--color-bg-charcoal) 96%, transparent);
   --glass-border: var(--color-border-dark);
@@ -152,15 +154,9 @@
   --glass-blue-hover: var(--color-accent-teal-dk);
 }
 
-.font-raleway {
-  font-family: 'Raleway', sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-}
-
 html, body {
   font-family: var(--font-sans);
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   background-color: var(--color-bg-cream);
   color: var(--color-text-dark);
   -webkit-font-smoothing: antialiased;
@@ -444,7 +440,6 @@ html, body {
 .modal-glow[data-state="open"]::before { opacity: .6; }
 .contact-progress { position: relative; }
 .contact-progress::after { content: ""; position: absolute; top: 50%; left: calc(var(--progress, 50%) - 5px); width: 10px; height: 10px; border-radius: 50%; background: #2ec4b6; box-shadow: 0 0 10px rgb(46 196 182 / 80%); transform: translateY(-50%); transition: left 200ms ease-out; }
-.sample-badge { background: #082f49; color: #fff; }
 @media (prefers-reduced-motion: reduce) {
   .ui-button-glow, .ui-button-glow::before, .form-control-shell::before, .contact-progress::after { transition-duration: 150ms !important; animation: none !important; }
   .ui-button-glow:hover:not(:disabled), .ui-button-glow:active:not(:disabled) { transform: none !important; }

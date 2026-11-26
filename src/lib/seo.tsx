@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
 import { env } from './env'
 import type { MetaProps } from '@/types'
+import { siteContent } from '@/data/site'
 
 export function SEO({
   title,
   description,
   canonicalUrl,
-  ogImage = '/images/homepage-hero-1920.webp',
+  ogImage = '/media/hero-poster.webp',
   ogType = 'website',
   jsonLd,
 }: MetaProps) {
-  const fullTitle = `${title} | M&J Water Wells Casnovia, MI`
+  const fullTitle = `${title} | ${siteContent.business.name.value} ${siteContent.business.location.value}`
   const fullUrl = canonicalUrl ? `${env.SITE_URL}${canonicalUrl}` : env.SITE_URL
   const fullOgImage = ogImage.startsWith('http') ? ogImage : `${env.SITE_URL}${ogImage}`
 
@@ -79,93 +80,28 @@ export function generateLocalBusinessSchema(options?: {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'M&J Water Wells',
-    alternateName: 'M and J Water Wells',
+    name: siteContent.business.name.value,
     url: `${env.SITE_URL}${options?.pagePath || ''}`,
-    telephone: '(616) 675-4875',
-    email: 'info@MandJWaterWells.com',
-    priceRange: '$$',
-    description:
-      "West Michigan's rotary well drilling and repair company in Casnovia, MI. Commercial, residential, farm, and irrigation drilling.",
-    paymentAccepted: 'Cash, Credit Card, Square, Visa, Mastercard, American Express, Discover, Check',
-    currenciesAccepted: 'USD',
+    telephone: siteContent.business.phone.value,
+    email: siteContent.business.email.value,
+    description: siteContent.business.description.value,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '1036 Truman Avenue',
-      addressLocality: 'Casnovia',
-      addressRegion: 'MI',
-      postalCode: '49318',
+      streetAddress: siteContent.business.address.street.source === 'legacy'
+        ? siteContent.business.address.street.value
+        : undefined,
+      addressLocality: siteContent.business.address.city.value,
+      addressRegion: siteContent.business.address.state.value,
+      postalCode: siteContent.business.address.zip.source === 'legacy'
+        ? siteContent.business.address.zip.value
+        : undefined,
       addressCountry: 'US',
     },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '43.2356',
-      longitude: '-85.7892',
-    },
     areaServed: [
-      { '@type': 'City', name: 'Casnovia' },
-      { '@type': 'City', name: 'Sand Lake' },
-      { '@type': 'City', name: 'Newaygo' },
-      { '@type': 'City', name: 'Fremont' },
-      { '@type': 'City', name: 'Hesperia' },
-      { '@type': 'City', name: 'Cedar Springs' },
-      { '@type': 'City', name: 'Grand Rapids' },
-      { '@type': 'AdministrativeArea', name: 'Kent County' },
-      { '@type': 'AdministrativeArea', name: 'Newaygo County' },
-      { '@type': 'AdministrativeArea', name: 'Muskegon County' },
-      { '@type': 'AdministrativeArea', name: 'Ottawa County' },
+      ...siteContent.areas.towns
+        .filter(({ name }) => name.source === 'legacy')
+        .map(({ name }) => name.value),
+      siteContent.areas.coverage.value,
     ],
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '07:30',
-        closes: '17:30',
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: 'Saturday',
-        opens: '08:00',
-        closes: '13:00',
-      },
-    ],
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Well Drilling & Repair Services',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Residential Rotary Well Drilling',
-            description: 'Custom well drilling for Casnovia and West Michigan homes.',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Commercial & Municipal Well Drilling',
-            description: 'High-capacity production wells for facilities and developments.',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Farm & Irrigation Well Drilling',
-            description: 'High-yield rotary irrigation wells for farms and orchards.',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: '24/7 Water Well Pump Repair',
-            description: 'Emergency pump replacement using Goulds, Pentair, and Franklin Electric.',
-          },
-        },
-      ],
-    },
   }
 }

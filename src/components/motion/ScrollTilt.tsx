@@ -1,17 +1,10 @@
 import React, { useRef, useEffect } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface ScrollTiltProps {
   children: React.ReactNode
   className?: string
   maxRotation?: number // degrees, e.g. 10 deg
-}
-
-// Register ScrollTrigger once safely in browser environment
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
 }
 
 export const ScrollTilt: React.FC<ScrollTiltProps> = ({
@@ -26,37 +19,35 @@ export const ScrollTilt: React.FC<ScrollTiltProps> = ({
     if (shouldReduceMotion || typeof window === 'undefined' || !containerRef.current) return
 
     const element = containerRef.current
-
-    // Set initial 3D perspective styles
-    gsap.set(element, {
-      transformPerspective: 1000,
-      transformOrigin: '50% 100%',
+    let active = true
+    let revert = () => {}
+    void import('@/lib/motion/gsap').then(({ gsap }) => {
+      if (!active) return
+      const context = gsap.context(() => {
+        gsap.fromTo(
+          element,
+          { rotateX: maxRotation, opacity: 0.85, scale: 0.98 },
+          {
+            rotateX: 0,
+            opacity: 1,
+            scale: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 85%',
+              end: 'top 40%',
+              scrub: 0.6,
+            },
+          },
+        )
+      }, element)
+      revert = () => context.revert()
     })
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        element,
-        {
-          rotateX: maxRotation,
-          opacity: 0.85,
-          scale: 0.98,
-        },
-        {
-          rotateX: 0,
-          opacity: 1,
-          scale: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top 85%',
-            end: 'top 40%',
-            scrub: 0.6,
-          },
-        }
-      )
-    }, containerRef)
-
-    return () => ctx.revert()
+    return () => {
+      active = false
+      revert()
+    }
   }, [shouldReduceMotion, maxRotation])
 
   return (

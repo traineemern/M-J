@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin } from 'lucide-react'
-import { siteData, utilityBarLinks } from '@/data/site'
+import { siteData, siteContent, utilityBarLinks } from '@/data/site'
 import { Container } from '@/components/ui/Container'
 
 export function UtilityBar() {
@@ -12,7 +12,7 @@ export function UtilityBar() {
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 font-semibold text-white">
               <MapPin className="w-3.5 h-3.5 text-aqua" />
-              <span>Casnovia, MI & West Michigan</span>
+              <span>{siteContent.business.location.value} &amp; {siteContent.areas.coverage.value}</span>
             </span>
             <span className="hidden sm:inline-block text-water-400">|</span>
             <span className="hidden sm:inline font-medium text-water-100 italic">
@@ -48,7 +48,7 @@ export function UtilityBar() {
             <a
               href={`tel:${siteData.phoneClean}`}
               className="md:hidden font-bold text-white hover:text-aqua transition-colors flex items-center gap-1"
-              aria-label={`Call ${siteData.phone}`}
+              aria-label={`${siteContent.pages.labels.call.value} ${siteData.phone}`}
             >
               <Phone className="w-3 h-3 fill-current text-aqua" />
               <span>{siteData.phone}</span>

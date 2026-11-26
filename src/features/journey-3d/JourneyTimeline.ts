@@ -1,10 +1,5 @@
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { MutableRefObject } from 'react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+import { motionConfig } from '@/lib/motion/config'
 
 export interface JourneyTimelineOptions {
   triggerElement: HTMLElement
@@ -12,10 +7,15 @@ export interface JourneyTimelineOptions {
   onUpdate: (progress: number) => void
 }
 
-export function createJourneyTimeline({ triggerElement, maxProgress, onUpdate }: JourneyTimelineOptions) {
-  const st = ScrollTrigger.create({
+export async function createJourneyTimeline({
+  triggerElement,
+  maxProgress,
+  onUpdate,
+}: JourneyTimelineOptions) {
+  const { ScrollTrigger } = await import('@/lib/motion/gsap')
+  const scrollTrigger = ScrollTrigger.create({
     trigger: triggerElement,
-    start: 'top top',
+    start: motionConfig.trigger.railStart,
     end: '+=400%',
     pin: true,
     onUpdate: (self) => {
@@ -25,20 +25,11 @@ export function createJourneyTimeline({ triggerElement, maxProgress, onUpdate }:
     },
   })
 
-  // Refresh when fonts are loaded
-  if (typeof document !== 'undefined' && document.fonts?.ready) {
-    document.fonts.ready.then(() => {
-      ScrollTrigger.refresh()
-    }).catch(() => {})
-  }
+  void document.fonts.ready.then(() => ScrollTrigger.refresh())
 
   return {
-    scrollTrigger: st,
-    destroy: () => {
-      st.kill()
-    },
-    refresh: () => {
-      ScrollTrigger.refresh()
-    },
+    scrollTrigger,
+    destroy: () => scrollTrigger.kill(),
+    refresh: () => ScrollTrigger.refresh(),
   }
 }

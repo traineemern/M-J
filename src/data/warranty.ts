@@ -1,37 +1,17 @@
+import { resolveContent, siteContent } from '@/data/site'
+
 export const warrantyPageData = {
-  heading: 'Warranty Coverage',
-  intro: 'Solid warranty protection backed by local family accountability.', // 8 words
-
+  heading: siteContent.pages.warranty.heroFirst.value,
+  intro: resolveContent(siteContent.warranty.coverage) ?? '',
   promises: [
-    {
-      id: 'workmanship',
-      title: 'Workmanship Guarantee',
-      line: 'Every well is drilled strictly to Michigan EGLE standards.',
-      icon: 'ShieldCheck',
-    },
-    {
-      id: 'equipment',
-      title: 'Premium Brand Equipment',
-      line: 'Factory warranties on Goulds, Pentair, and Franklin Electric pumps.',
-      icon: 'Wrench',
-    },
-    {
-      id: 'records',
-      title: 'Official State Records',
-      line: 'You receive full lithological well logs and certified lab results.',
-      icon: 'FileText',
-    },
+    { id: 'pumps', title: siteContent.pages.labels.pumps.value, line: resolveContent(siteContent.warranty.coverage) ?? '' },
+    { id: 'pressure-tanks', title: siteContent.pages.labels.pressureTanks.value, line: resolveContent(siteContent.warranty.coverage) ?? '' },
+    { id: 'length', title: siteContent.pages.labels.length.value, line: resolveContent(siteContent.warranty.years) ?? '' },
   ],
-
   termsAccordion: {
     id: 'full-terms',
-    title: 'Read Full Terms',
-    content:
-      'All rotary well drilling, casing installation, and pump equipment installed by M&J Water Wells carry manufacturer guarantees and labor commitments. Casing and grout seals are guaranteed against surface contamination. [CONFIRM: exact warranty duration in years].',
+    title: siteContent.pages.warranty.readTerms.value,
+    content: resolveContent(siteContent.warranty.terms) ?? '',
   },
-
-  primaryCta: {
-    text: 'Get a free estimate',
-    href: '/#contact-estimate',
-  },
+  primaryCta: { text: siteContent.pages.labels.freeEstimate.value },
 } as const

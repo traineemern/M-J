@@ -5,6 +5,7 @@ import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { Phone, ArrowRight } from 'lucide-react'
 import { siteData } from '@/data/site'
+import { motionConfig } from '@/lib/motion/config'
 
 interface PhotoBandProps {
   headline?: string
@@ -27,36 +28,32 @@ export const PhotoBand: React.FC<PhotoBandProps> = ({
     const img = imageRef.current
     if (!container || !img || typeof window === 'undefined') return
 
-    let isMounted = true
-    let stInstance: unknown = null
-
-    // Lazy load GSAP only for the parallax effect
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
-      .then(([{ gsap }, { ScrollTrigger }]) => {
-        if (!isMounted) return
-        gsap.registerPlugin(ScrollTrigger)
-
-        // Parallax moves image 10% slower than the page scroll
-        stInstance = ScrollTrigger.create({
-          trigger: container,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-          onUpdate: (self) => {
-            const yPercent = (self.progress - 0.5) * -10 // 10% parallax delta
-            gsap.set(img, { yPercent, overwrite: 'auto' })
+    let active = true
+    let revert = () => {}
+    void import('@/lib/motion/gsap').then(({ gsap }) => {
+      if (!active) return
+      const context = gsap.context(() => {
+        gsap.fromTo(
+          img,
+          { yPercent: -motionConfig.parallax.hero * 50 },
+          {
+            yPercent: motionConfig.parallax.hero * 50,
+            ease: motionConfig.ease.none,
+            scrollTrigger: {
+              trigger: container,
+              start: motionConfig.trigger.parallaxStart,
+              end: motionConfig.trigger.parallaxEnd,
+              scrub: motionConfig.scrub.parallax,
+            },
           },
-        })
-      })
-      .catch((err) => {
-        console.error('Failed to load GSAP for PhotoBand:', err)
-      })
+        )
+      }, container)
+      revert = () => context.revert()
+    })
 
     return () => {
-      isMounted = false
-      if (stInstance && typeof (stInstance as { kill: () => void }).kill === 'function') {
-        ;(stInstance as { kill: () => void }).kill()
-      }
+      active = false
+      revert()
     }
   }, [shouldReduceMotion, isMobile])
 

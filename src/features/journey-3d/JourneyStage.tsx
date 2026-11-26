@@ -76,16 +76,25 @@ export const JourneyStage: React.FC<JourneyStageProps> = ({
     if (shouldReduceMotion || !webglSupported || lowFpsFallback || forcePoster) return
     if (!containerRef.current) return
 
-    const timeline = createJourneyTimeline({
+    let active = true
+    let destroyTimeline = () => {}
+    void createJourneyTimeline({
       triggerElement: containerRef.current,
       maxProgress,
       onUpdate: (p) => {
         setProgress(p)
       },
+    }).then((timeline) => {
+      if (!active) {
+        timeline.destroy()
+        return
+      }
+      destroyTimeline = timeline.destroy
     })
 
     return () => {
-      timeline.destroy()
+      active = false
+      destroyTimeline()
     }
   }, [shouldReduceMotion, webglSupported, lowFpsFallback, forcePoster])
 

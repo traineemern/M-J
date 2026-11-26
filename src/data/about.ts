@@ -1,46 +1,36 @@
+import { resolveContent, siteContent } from '@/data/site'
+import { projectsPageData } from '@/data/projects'
+
 export const aboutPageData = {
-  heading: 'About M&J Water Wells',
-  story: 'Family-owned rotary well drillers serving Casnovia, Newaygo, and West Michigan with dependable groundwater systems.',
-
-  counters: [
-    {
-      id: 'years',
-      value: '[CONFIRM]',
-      label: 'Years Local Experience',
-    },
-    {
-      id: 'wells',
-      value: '[CONFIRM]',
-      label: 'Wells Drilled in MI',
-    },
-    {
-      id: 'rigs',
-      value: '[CONFIRM]',
-      label: 'Rigs in Service',
-    },
-    { id: 'towns', value: '[CONFIRM]', label: 'Service Towns' },
-  ],
-
-  highlights: [
-    {
-      title: 'Casnovia Family Crew',
-      line: 'Direct owner oversight and honest advice on every project.',
-      icon: 'Users',
-    },
-    {
-      title: 'Dual-Rotary Drilling',
-      line: 'Deep bedrock penetration ensuring clean, high-yield aquifers.',
-      icon: 'Droplet',
-    },
-    {
-      title: 'Fast Emergency Dispatch',
-      line: 'Rapid water restoration and pump repairs across West Michigan.',
-      icon: 'MapPin',
-    },
-  ],
-
-  primaryCta: {
-    text: 'Call (616) 675-4875',
-    href: 'tel:+16166754875',
-  },
+  story: siteContent.about.story.value,
+  standards: siteContent.editorial.aboutValues.flatMap((item) => {
+    const title = resolveContent(item.title)
+    const line = resolveContent(item.line)
+    return title && line ? [{ title, line }] : []
+  }),
+  highlights: siteContent.editorial.aboutValues.flatMap((item) => {
+    const title = resolveContent(item.title)
+    const line = resolveContent(item.line)
+    return title && line ? [{ title, line }] : []
+  }),
+  counters: siteContent.editorial.aboutStats.flatMap((item) => {
+    const value = resolveContent(item.value)
+    const label = resolveContent(item.label)
+    return value && label ? [{ value, label }] : []
+  }),
+  equipmentSpecs: [
+    resolveContent(siteContent.capabilities.wellDiameter),
+    resolveContent(siteContent.capabilities.replacementOrDrillingDiameter),
+    resolveContent(siteContent.capabilities.equipment),
+  ].filter((value): value is string => Boolean(value)),
+  projects: projectsPageData.items,
+  rating: resolveContent(siteContent.editorial.aboutRating),
+  ratingText: resolveContent(siteContent.editorial.aboutRatingText),
+  team: siteContent.editorial.aboutTeam.flatMap((item) => {
+    const name = resolveContent(item.name)
+    const role = resolveContent(item.role)
+    const bio = resolveContent(item.bio)
+    const image = resolveContent(item.image)
+    return name && role && bio && image ? [{ name, role, bio, image }] : []
+  }),
 } as const

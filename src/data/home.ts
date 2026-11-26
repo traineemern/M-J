@@ -1,3 +1,5 @@
+import { resolveContent, siteContent } from '@/data/site'
+
 export interface HomeServiceCard {
   id: string
   title: string
@@ -18,87 +20,44 @@ export interface HomeReviewQuote {
 
 export const homeData = {
   hero: {
-    headline: "West Michigan's well drilling specialists", // 5 words (< 8)
-    line: 'Family-owned rotary well drilling, water pumps, and dependable repairs.', // 9 words (< 15)
-    primaryCta: {
-      text: 'Get a free estimate',
-      href: '#contact-estimate',
-    },
-    secondaryCta: {
-      text: 'Our services',
-      href: '/services',
-    },
+    headline: siteContent.business.tagline.value,
+    line: siteContent.business.description.value,
+    primaryCta: { text: siteContent.pages.labels.freeEstimate.value, href: '/contact' },
+    secondaryCta: { text: siteContent.pages.labels.services.value, href: '/services' },
   },
-
   services: {
-    heading: 'Our Services', // 2 words
-    cards: [
-      {
-        id: 'residential',
-        title: 'Residential Well Drilling', // 3 words
-        line: 'Complete home water systems drilled for reliable flow.', // 8 words
-        icon: 'Droplets',
-      },
-      {
-        id: 'commercial',
-        title: 'Commercial & Agricultural', // 3 words
-        line: 'High-capacity irrigation and municipal-grade water supply.', // 6 words
-        icon: 'Building2',
-      },
-      {
-        id: 'pump-service',
-        title: 'Pump Service & Repair', // 4 words
-        line: 'Fast troubleshooting, pump replacement, and pressure tanks.', // 7 words
-        icon: 'Wrench',
-      },
-    ] as HomeServiceCard[],
-    learnMoreText: 'View all services →',
+    heading: siteContent.pages.home.serviceHeading.value,
+    cards: siteContent.services.slice(0, 3).map((service, index) => ({
+      id: service.id.value,
+      title: service.title.value,
+      line: resolveContent(service.summary) ?? '',
+      icon: (['Droplets', 'Building2', 'Wrench'][index] ?? 'Droplets') as HomeServiceCard['icon'],
+    })),
+    learnMoreText: siteContent.pages.labels.services.value,
   },
-
   whyUs: {
-    heading: 'Why Choose M&J', // 3 words
+    heading: siteContent.business.description.value,
     points: [
-      {
-        title: 'Licensed & Insured',
-        line: 'State-certified Michigan water well drilling contractor.', // 6 words
-        icon: 'ShieldCheck',
-      },
-      {
-        title: 'Rotary Precision',
-        line: 'Modern dual-rotary rigs engineered for clean water.', // 7 words
-        icon: 'Cog',
-      },
-      {
-        title: 'Fast Local Response',
-        line: 'Casnovia crew offering emergency repair across West Michigan.', // 8 words
-        icon: 'Clock',
-      },
-    ] as HomeWhyPoint[],
+      { title: siteContent.business.location.value, line: siteContent.business.description.value, icon: 'ShieldCheck' as const },
+      { title: siteContent.capabilities.equipment.value, line: siteContent.capabilities.wellDiameter.value, icon: 'Cog' as const },
+      { title: siteContent.contact.estimateRequest.value, line: siteContent.business.phoneResponse.value, icon: 'Clock' as const },
+    ],
   },
-
   serviceArea: {
-    heading: 'Service Area', // 2 words
-    line: 'Serving Casnovia, Newaygo, Sand Lake, Fremont, and West Michigan.', // 9 words
-    linkText: 'Newaygo Coverage →',
-    linkHref: '/areas/newaygo',
+    heading: siteContent.pages.labels.contact.value,
+    line: siteContent.areas.coverage.value,
+    linkText: siteContent.pages.labels.contact.value,
+    linkHref: '/contact',
   },
-
   reviews: {
-    heading: 'Customer Reviews', // 2 words
-    quotes: [
-      {
-        quote: 'M&J restored our water within hours. Fantastic local crew.', // 9 words
-        author: 'Dave M., Newaygo',
-      },
-      {
-        quote: 'Clean site, honest pricing, and outstanding water pressure.', // 8 words
-        author: 'Sarah K., Casnovia',
-      },
-    ] as HomeReviewQuote[],
+    heading: resolveContent(siteContent.about.rating) ?? '',
+    quotes: siteContent.about.testimonials.map((item) => ({
+      quote: resolveContent(item.quote) ?? '',
+      author: resolveContent(item.name) ?? '',
+    })),
   },
-
   contact: {
-    heading: 'Request an Estimate', // 3 words
-    intro: 'Contact our Casnovia team for a free estimate.', // 8 words
+    heading: siteContent.pages.labels.freeEstimate.value,
+    intro: siteContent.contact.estimateRequest.value,
   },
 } as const

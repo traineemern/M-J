@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useVisibleGlowPulse } from '@/hooks/useVisibleGlowPulse'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  'data-motion'?: string
   variant?: 'primary' | 'secondary' | 'dark' | 'outline' | 'ghost' | 'white'
   size?: 'sm' | 'md' | 'lg'
   href?: string
@@ -20,6 +21,7 @@ export function Button({
   isExternal,
   pulse = false,
   children,
+  'data-motion': motionPreset,
   ...props
 }: ButtonProps) {
   const { pulseRef, pulseActive } = useVisibleGlowPulse(pulse)
@@ -55,6 +57,7 @@ export function Button({
         <a
           href={href}
           ref={pulseRef as React.Ref<HTMLAnchorElement>}
+          data-motion={motionPreset}
           {...(variant === 'primary' ? { 'data-glass-blur': 'true' } : {})}
           className={combinedClasses}
           {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
@@ -65,14 +68,14 @@ export function Button({
     }
 
     return (
-      <Link to={href} ref={pulseRef as React.Ref<HTMLAnchorElement>} className={combinedClasses} {...(variant === 'primary' ? { 'data-glass-blur': 'true' } : {})}>
+      <Link to={href} ref={pulseRef as React.Ref<HTMLAnchorElement>} data-motion={motionPreset} className={combinedClasses} {...(variant === 'primary' ? { 'data-glass-blur': 'true' } : {})}>
         {children}
       </Link>
     )
   }
 
   return (
-    <button ref={pulseRef as React.Ref<HTMLButtonElement>} className={combinedClasses} {...(variant === 'primary' ? { 'data-glass-blur': 'true' } : {})} {...props}>
+    <button ref={pulseRef as React.Ref<HTMLButtonElement>} data-motion={motionPreset} className={combinedClasses} {...(variant === 'primary' ? { 'data-glass-blur': 'true' } : {})} {...props}>
       {children}
     </button>
   )

@@ -1,17 +1,26 @@
 import React from 'react'
-import { CheckCircle2 } from 'lucide-react'
-import { LazyLottie } from '@/components/motion/LazyLottie'
+import { motion } from 'motion/react'
+import { siteContent } from '@/data/site'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 export const SuccessCheck: React.FC = () => {
+  const reduced = useReducedMotion()
+
   return (
-    <div className="w-16 h-16 mx-auto flex items-center justify-center">
-      <LazyLottie
-        animationPath="/lottie/check.json"
-        loop={false}
-        fallback={<CheckCircle2 className="w-16 h-16 text-emerald-600" />}
-        className="w-16 h-16"
+    <svg className="success-check" viewBox="0 0 64 64" role="img"     aria-label={siteContent.contact.form.successTitle.value}>
+      <circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" strokeWidth="2" />
+      <motion.path
+        d="M18 33.5 27 42l19-20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={reduced ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       />
-    </div>
+    </svg>
   )
 }
 

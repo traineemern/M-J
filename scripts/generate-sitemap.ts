@@ -51,4 +51,4 @@ if (fs.existsSync(distDir)) {
   fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf-8')
 }
 
-console.log('Successfully generated sitemap.xml and robots.txt with /faq route')
+console.log('Successfully generated sitemap.xml and robots.txt')

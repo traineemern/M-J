@@ -1,89 +1,54 @@
-import { SEO } from '@/lib/seo'
-import { Container } from '@/components/ui/Container'
-import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card'
-import { ShieldCheck, Wrench, FileText, ArrowRight } from 'lucide-react'
-import { FadeUp } from '@/components/motion/FadeUp'
-import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger'
-import { TiltCard } from '@/components/motion/TiltCard'
-import { Accordion } from '@/components/ui/Accordion'
+import { ArrowUpRight } from 'lucide-react'
+import { SEO, generateLocalBusinessSchema } from '@/lib/seo'
 import { warrantyPageData } from '@/data/warranty'
-
-const iconMap = {
-  ShieldCheck,
-  Wrench,
-  FileText,
-}
+import { InnerPageHero } from '@/sections/hero/InnerPageHero'
+import { CtaBand } from '@/sections/homepage/CtaBand'
+import { useEnquiry } from '@/features/enquiry/EnquiryContext'
+import { Button } from '@/components/ui/Button'
+import { resolveContent, siteContent } from '@/data/site'
 
 export function WarrantyPage() {
+  const { openEnquiry } = useEnquiry()
+
   return (
     <>
       <SEO
-        title="Well Drilling Warranty Terms | West Michigan"
-        description="M&J Water Wells warranty terms for rotary well drilling, pump installations, and equipment in West Michigan."
+        title={siteContent.pages.warranty.title.value}
+        description={siteContent.pages.warranty.description.value}
         canonicalUrl="/warranty"
+        jsonLd={generateLocalBusinessSchema({ pagePath: '/warranty', pageName: 'Warranty' })}
       />
-
-      {/* Page Hero */}
-      <section className="bg-gradient-to-b from-water-700 to-water-900 text-white py-14 sm:py-18">
-        <Container size="md">
-          <FadeUp className="text-center space-y-3">
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-condensed uppercase">
-              {warrantyPageData.heading}
-            </h1>
-            <p className="text-base sm:text-lg text-water-100 max-w-xl mx-auto font-sans leading-relaxed">
-              {warrantyPageData.intro}
-            </p>
-          </FadeUp>
-        </Container>
+      <InnerPageHero
+        variant="warranty"
+        firstLine={siteContent.pages.warranty.heroFirst.value}
+        outlinedLine={resolveContent(siteContent.pages.warranty.heroOutlined) ?? ''}
+        description={warrantyPageData.intro}
+      />
+      <section className="warranty-promises" data-motion="stagger" aria-label={siteContent.pages.warranty.sectionLabel.value}>
+        {warrantyPageData.promises.map((promise, index) => (
+          <article className="warranty-promise" data-motion-item key={promise.id}>
+            <span className="warranty-promise__number">{String(index + 1).padStart(2, '0')}</span>
+            <h2>{promise.title}</h2>
+            <p>{promise.line}</p>
+            <span className="warranty-promise__mark" aria-hidden="true">+</span>
+          </article>
+        ))}
       </section>
-
-      {/* 3 Key Promises */}
-      <section className="py-14 sm:py-20 bg-white">
-        <Container size="md">
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-            {warrantyPageData.promises.map((promise) => {
-              const Icon = iconMap[promise.icon as keyof typeof iconMap] || ShieldCheck
-
-              return (
-                <StaggerItem key={promise.id}>
-                  <TiltCard maxTilt={8} className="h-full">
-                    <Card variant="interactive" className="h-full p-6 text-center border-t-4 border-t-water-600 bg-water-50/40 hover:shadow-lg transition-all duration-200">
-                      <div className="w-12 h-12 rounded-xl bg-water-100 text-water-700 flex items-center justify-center mx-auto mb-3">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <h2 className="text-lg font-bold text-water-900 font-condensed uppercase tracking-wide mb-1.5">
-                        {promise.title}
-                      </h2>
-                      <p className="text-sm text-water-800 leading-relaxed font-sans">
-                        {promise.line}
-                      </p>
-                    </Card>
-                  </TiltCard>
-                </StaggerItem>
-              )
-            })}
-          </StaggerContainer>
-
-          {/* Full Terms Accordion */}
-          <div className="max-w-2xl mx-auto mb-10">
-            <Accordion items={[warrantyPageData.termsAccordion]} />
-          </div>
-
-          {/* Primary Action */}
-          <div className="text-center">
-            <Button
-              href={warrantyPageData.primaryCta.href}
-              variant="primary"
-              size="lg"
-              className="font-condensed uppercase tracking-wider"
-            >
-              <span>{warrantyPageData.primaryCta.text}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </Container>
+      <section className="warranty-terms">
+        {warrantyPageData.termsAccordion.content && (
+          <details>
+            <summary>
+              <span>{warrantyPageData.termsAccordion.title}</span>
+              <ArrowUpRight size={22} aria-hidden="true" />
+            </summary>
+            <div>{warrantyPageData.termsAccordion.content}</div>
+          </details>
+        )}
+        <Button type="button" data-motion="magnetic" className="night-button" onClick={() => openEnquiry()}>
+          {warrantyPageData.primaryCta.text} <ArrowUpRight size={16} />
+        </Button>
       </section>
+      <CtaBand />
     </>
   )
 }

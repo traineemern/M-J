@@ -1,0 +1,96 @@
+.night-site {
+  --body-font: var(--font-sans);
+  --display-font: var(--font-display);
+  --mono-font: var(--font-mono);
+}
+
+.typo-eyebrow,
+.typo-mono {
+  font-family: var(--mono-font), monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.typo-eyebrow {
+  margin: 0 0 1rem;
+  color: var(--electric, var(--color-night-electric));
+}
+
+.typo-display {
+  width: 100%;
+  margin: 0;
+  color: var(--ice, var(--color-night-ice));
+  font-family: var(--display-font), sans-serif;
+  font-size: clamp(2.5rem, 8vw, 8rem);
+  font-variation-settings: "wght" 800, "wdth" 120;
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.typo-display--section {
+  font-size: clamp(2rem, 4vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.typo-display__line {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.typo-display__line[data-fit-line] {
+  white-space: nowrap;
+}
+
+.typo-display__line[data-split='chars'] {
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.typo-display__line--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px currentColor;
+  -webkit-text-stroke-color: var(--ice, var(--color-night-ice));
+  text-stroke: 1.5px var(--ice, var(--color-night-ice));
+}
+
+.typo-display__char {
+  display: inline-block;
+  white-space: pre;
+  transition: font-variation-settings 180ms ease-out;
+}
+
+.motion-split-word {
+  display: inline;
+}
+
+.typo-display__line[data-split-line] {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.typo-lede {
+  max-width: 44rem;
+  color: var(--steel, var(--color-night-steel));
+  font-family: var(--body-font), sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.7;
+}
+
+.typo-mono {
+  color: var(--steel, var(--color-night-steel));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typo-display__char {
+    transition: none;
+  }
+}

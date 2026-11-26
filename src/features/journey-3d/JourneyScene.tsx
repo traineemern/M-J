@@ -235,7 +235,7 @@ function DioramaCards({ progress }: { progress: number }) {
 }
 
 export const JourneyScene: React.FC<JourneySceneProps> = ({ progress, onDrawCallCount, isMobile = false, surfaceOnly = false }) => {
-  const { camera, gl, scene } = useThree()
+  const { camera, gl, scene, size } = useThree()
   const callsReported = useRef(false)
   const baseAngle = Math.PI / 4
   const whiteMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({ ...white }), [])
@@ -248,8 +248,14 @@ export const JourneyScene: React.FC<JourneySceneProps> = ({ progress, onDrawCall
     easedAngle.current = THREE.MathUtils.damp(easedAngle.current, baseAngle + scrollOrbit + mouseOrbit, 4, delta)
     const angle = easedAngle.current
     const deliveryPullback = THREE.MathUtils.smoothstep(progress, 0.91, 1) * 4
-    const radius = (surfaceOnly ? 52 : 54) + deliveryPullback
-    camera.position.set(Math.sin(angle) * radius, (surfaceOnly ? 34 : 36) + Math.abs(pointer.y) * (isMobile ? 0 : 0.2), Math.cos(angle) * radius)
+    const aspect = size.width / Math.max(1, size.height)
+    const framingScale = surfaceOnly ? Math.min(1.8, Math.max(1, 1.3 / aspect)) : 1
+    const radius = (surfaceOnly ? 52 : 54) * framingScale + deliveryPullback
+    camera.position.set(
+      Math.sin(angle) * radius,
+      (surfaceOnly ? 34 : 36) * framingScale + Math.abs(pointer.y) * (isMobile ? 0 : 0.2),
+      Math.cos(angle) * radius,
+    )
     camera.lookAt(0, surfaceOnly ? 1 : 2, 0)
     if (!callsReported.current && onDrawCallCount && gl.info.render.calls) {
       callsReported.current = true

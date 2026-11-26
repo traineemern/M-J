@@ -27,10 +27,9 @@ export function CinematicHero() {
     >
       <img
         className="cinematic-hero__image absolute inset-0 -z-20 h-full w-full object-cover object-[58%_center]"
-        src="/images/homepage-hero-1920.webp"
-        srcSet="/images/homepage-hero-960.webp 960w, /images/homepage-hero-1920.webp 1920w"
+        src="/images/image.png"
         sizes="100vw"
-        alt="M&J Water Wells truck crossing an open farm field in West Michigan"
+        alt="M&J Water Wells location and roadside sign in West Michigan"
         width={1920}
         height={795}
         fetchPriority="high"
